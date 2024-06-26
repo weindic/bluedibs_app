@@ -1,0 +1,111 @@
+ion-item {
+    --inner-padding-top: 4px;
+
+    --inner-margin-top: 0px;
+
+    --inner-padding-bottom: 3px;
+    
+  }
+
+
+  .radio{
+    font-size: 12px;
+  }
+
+
+  ion-modal#customMod {
+    --width: fit-content;
+    --min-width: 300px;
+    --height: 380px;
+    --border-radius: 6px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+    overflow-y: hidden;
+  }
+
+  .mainCont{
+    padding: 10px;
+    overflow-y: hidden;
+  }
+
+  .error-message{
+    color: red;
+    font-size: 12px;
+  }
+  
+  ion-modal#customMod h1 {
+    margin: 20px 20px 10px 20px;
+  }
+  
+  ion-modal#customMod ion-icon {
+    margin-right: 6px;
+  
+    width: 48px;
+    height: 48px;
+  
+    padding: 4px 0;
+  
+    color: #aaaaaa;
+  }
+  
+  ion-modal#customMod .wrapper {
+    margin-bottom: 10px;
+  }
+
+
+
+
+.vipLabel{
+  position: fixed;
+  top: 7%;
+  width: 100%;
+  left: 0;
+  padding: 5px;
+  background: #efc8819e;
+  text-align: center;
+}
+
+
+  
+  ion-modal#waitingMod {
+    --width: fit-content;
+    --min-width: 300px;
+    --height: 220px;
+    --border-radius: 6px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+    overflow-y: hidden;
+  }
+
+
+  .conAv{
+   
+    border-radius: 50%;
+    padding: 2px;
+    overflow: hidden;
+    border:2px solid #1b005a;
+  }
+
+
+
+
+  ion-modal#waitingMod h1 {
+    margin: 20px 20px 10px 20px;
+  }
+  
+  ion-modal#waitingMod ion-icon {
+    margin-right: 6px;
+  
+    width: 48px;
+    height: 48px;
+  
+    padding: 4px 0;
+  
+    color: #aaaaaa;
+  }
+  
+  ion-modal#waitingMod .wrapper {
+    margin-bottom: 10px;
+  }
+
+
+
+  

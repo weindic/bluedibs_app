@@ -1,0 +1,9 @@
+{
+  "name": "Blue Dibs",
+
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+  
+}

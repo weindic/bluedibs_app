@@ -1,0 +1,82 @@
+.notifLabel{
+    padding:0 10px;
+}
+
+.notifLabel h6{margin: 0; padding: 0; font-size: 14px; font-weight: 600;}
+
+
+.notif_box{
+    padding: 10px;
+}
+
+
+
+
+
+  
+ion-modal#waitingMod {
+    --width: fit-content;
+    --min-width: 300px;
+    --height: 270px;
+    --border-radius: 6px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+    overflow-y: hidden;
+  }
+
+
+  .conAv{
+   
+    border-radius: 50%;
+    padding: 2px;
+    overflow: hidden;
+    border:2px solid #1b005a;
+  }
+
+
+.mainCont{
+    text-align: center;
+}
+
+  ion-modal#waitingMod h1 {
+    margin: 20px 20px 10px 20px;
+  }
+  
+  ion-modal#waitingMod ion-icon {
+    margin-right: 6px;
+  
+    width: 48px;
+    height: 48px;
+  
+    padding: 4px 0;
+  
+    color: #aaaaaa;
+  }
+  
+  ion-modal#waitingMod .wrapper {
+    margin-bottom: 10px;
+  }
+
+
+  .smallavatar{
+    width:40px;
+    height: 40px;
+  }
+
+  
+  .smallavatar img{
+    width:100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .symbols{
+    text-align: right;
+    font-size: 20px;
+  }
+
+  .notifLabel{
+    padding-left: 0;
+    white-space: normal !important;
+  }
+
+  

@@ -1,0 +1,14 @@
+#alert-3-sub-hdr{
+    margin-top:12px;
+    font-size: 10px !important;
+}
+
+#alert-3-hdr{
+    color:rgb(23, 0, 77);
+    margin-top:10px;
+    font-size: 16px !important;
+}
+
+.dark{
+    color:rgb(141, 141, 141) !important;
+}

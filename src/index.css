@@ -1,0 +1,52 @@
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+.cropper {
+  height: 70vh;
+}
+
+:host {
+  --overflow: "hidden";
+  --color-selected: var(--mantine-color-blue-5) !important ;
+}
+
+ion-tab-button {
+  background: white !important;
+  color: #b5b5b5;
+  border-top: none !important;
+}
+
+ion-tab-button.tab-selected {
+  color: var(--mantine-color-blue-5);
+}
+
+ion-ripple-effect {
+  color: var(--mantine-color-blue-5) !important;
+}
+
+ion-tab-bar {
+  /* box-shadow: 0px -11px 19px 0px rgba(0, 0, 0, 0.08); */
+  border-top: none;
+}
+
+ion-item::part(native) {
+  border-bottom: 1px solid #eaeaea;
+}
+
+.advanced-cropper {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.rmc-cropper {
+  color: #4c6ef5;
+}
+
+.swiper-pagination-bullet {
+  background-color: black !important;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #4c6ef5 !important;
+}
