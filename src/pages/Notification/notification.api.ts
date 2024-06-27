@@ -13,7 +13,7 @@ export const  sendNotificationApi = async(fromId:any, toId:any, sourceId:any, ms
     }
 
     try {
-      const response = await fetch('http://localhost:3000/notification-alerts/create', {
+      const response = await fetch('https://server.bluedibs.com/notification-alerts/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ export const  sendNotificationApi = async(fromId:any, toId:any, sourceId:any, ms
 
 export async function fetchVipChatRequestById(id:any) {
   try {
-    const response = await fetch(`http://localhost:3000/vip-chat-request/${id}`);
+    const response = await fetch(`https://server.bluedibs.com/vip-chat-request/${id}`);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }

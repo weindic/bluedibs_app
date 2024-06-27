@@ -307,7 +307,7 @@ function SinglePost({ data, virtualItem }: { data: any; virtualItem: any }) {
 
   const checkPopular = async (userId: any) => {
     try {
-      const response = await fetch('http://localhost:3000/popular-profile/status/' + userId, {
+      const response = await fetch('https://server.bluedibs.com/popular-profile/status/' + userId, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

@@ -42,6 +42,7 @@ import useLocalNotificationScheduler from "./utils/notificationUtils";
 import { requestNotificationPermission } from "./realtime/permission";
 
 import { Plugins, Capacitor } from '@capacitor/core';
+import { StatusBar, Style } from "@capacitor/status-bar";
 
 const { Permissions, Geolocation } = Plugins;
 
@@ -53,6 +54,17 @@ setupIonicReact();
 
 
 const App: React.FC = () => {
+
+  useEffect(() => {
+    const setStatusBar = async () => {
+      // Set the status bar color
+      await StatusBar.setBackgroundColor({ color: '#040881' }); // Change the color as needed
+      // Optionally, you can also change the style (light or dark content)
+      await StatusBar.setStyle({ style: Style.Dark }); // or Style.Dark
+    };
+
+    setStatusBar();
+  }, []);
 
   useEffect(() => {
     requestPermissions();

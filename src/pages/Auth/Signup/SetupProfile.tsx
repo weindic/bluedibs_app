@@ -144,7 +144,7 @@ else{
 
   // const fetchUser = async () => {
   //   try {
-  //     const response = await fetch(`http://localhost:3000/users/${firebaseId}`);
+  //     const response = await fetch(`https://server.bluedibs.com/users/${firebaseId}`);
   //     if (!response.ok) {
   //       throw new Error('Failed to fetch user');
   //     }

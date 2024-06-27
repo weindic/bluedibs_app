@@ -88,7 +88,7 @@ const [userID, setUser] = useState('')
     }
 
     try {
-      const response = await fetch('http://localhost:3000/referral-wallets/refferalGet', {
+      const response = await fetch('https://server.bluedibs.com/referral-wallets/refferalGet', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

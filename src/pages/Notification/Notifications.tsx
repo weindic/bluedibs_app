@@ -159,7 +159,7 @@ function Notifications() {
     }
 
     try {
-     await fetch('http://localhost:3000/vip-chat-request/update-status', {
+     await fetch('https://server.bluedibs.com/vip-chat-request/update-status', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -201,7 +201,7 @@ function Notifications() {
 
   const createVipRoom = async (data:any) => {
     try {
-      const response = await fetch('http://localhost:3000/vip-chat-room/createRoom', {
+      const response = await fetch('https://server.bluedibs.com/vip-chat-room/createRoom', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -240,7 +240,7 @@ function Notifications() {
 
   const updateAllSeenStatusByUserId = async (userId:any, seenStatus:any) => {
     try {
-      const response = await fetch('http://localhost:3000/notification-alerts/seen-status/all', {
+      const response = await fetch('https://server.bluedibs.com/notification-alerts/seen-status/all', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

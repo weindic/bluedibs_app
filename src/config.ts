@@ -1,6 +1,6 @@
 export const config = {
-  // API_URL: "http://localhost:3000",
-  API_URL: "http://localhost:3000/",
+  // API_URL: "https://server.bluedibs.com",
+  API_URL: "https://server.bluedibs.com/",
   
   // API_URL: "http://api.bluedibs.com",
   STATIC_FILE_BASE_URL:
