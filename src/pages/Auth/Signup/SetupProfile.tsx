@@ -263,25 +263,27 @@ else{
 
        
 
-      return updateProfile(vals as any).then(res=>{
+      return updateProfile(vals as any).then(async res=>{
 
         if(res.status === 200){
 
-          console.log('props.mode',props.mode)
+          let datamn =res.data.data.data;
+
+          await  localStorage.setItem('bluedibs:user',JSON.stringify(datamn));
+
+          
+
+          console.log('datamn',datamn)
+
+         
 
           showNotification({
             message: "Profile updated successfully",
             color: "green",
           });
 
-          let usrDt:any = localStorage.getItem('bluedibs:user');
-
-          let user = JSON.parse(usrDt);
-          
-          if(user.share!=='' || user.share!==null){
-            history.goBack();
-          }
-          else{
+         
+          if(datamn?.shares===0 || datamn?.shares==='' || datamn?.shares===null){
             history.replace("/auth/dilute-shares");
           }
            

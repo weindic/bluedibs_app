@@ -293,45 +293,9 @@ function SinglePost({ data, virtualItem }: { data: any; virtualItem: any }) {
   });
 
 
-  useEffect(() => {
-
-    checkPopular(userId);
-  }, []);
 
 
-  const [isPopular, setPopular] = useState(false)
 
-  const checkPopular = async (userId: any) => {
-    try {
-      const response = await fetch('https://server.bluedibs.com/popular-profile/status/' + userId, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      });
-  
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-  
-      const data = await response.json();
-  
-      if (data?.userId === userId) {
-        
-
-        return true;
-      }
-      else{
-        
-        return false;
-      
-      }
-  
-    
-    } catch (error) {
-      console.error('Error fetching chat data:', error);
-    }
-  };
   
 
 
@@ -370,7 +334,16 @@ function SinglePost({ data, virtualItem }: { data: any; virtualItem: any }) {
           align={"center"}
           onClick={() => history.push(`/app/user/${data.User.id}`)}
         >
-          <Avatar src={imgUrl(data.User?.avatarPath)} radius={10} size={40} />
+         
+
+          <IonAvatar  className="conAv" style={{width:55, height:38}}>
+                    <img src={data.User?.avatarPath!==null? data.User?.avatarPath: 'public/avatar.png'} 
+                    onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src="public/avatar.png";
+
+                    }}/>
+                    </IonAvatar>
                   {/* <IonAvatar style={{width:58, height:40}}>
                       <img  src={data.User?.avatarPath}/>
                     </IonAvatar> */}
@@ -378,11 +351,11 @@ function SinglePost({ data, virtualItem }: { data: any; virtualItem: any }) {
           <Flex direction={"column"} w="100%">
             <Title order={5} fw={600} fz={16}>
               {data.User?.username}
-              {/* {checkPopular(data.userId) && <>
+              {data?.popular===true && <>
                   <span>  <img src="public/tick.svg" style={{width:15, height:15}}/></span>
                   
                 </>
-                } */}
+                }
             </Title>
 
             <Text ff="Nunito Sans" size="xs" color="dimmed" weight={700}>

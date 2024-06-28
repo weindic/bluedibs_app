@@ -77,6 +77,7 @@ export function PublicProfile() {
   const [showAlert, setShowAlert] = useState(false);
   const [noBalance, setNoBalance] = useState(false);
   const [curUserData, setCurUser] = useState({})
+  const [loggedUSer, setLogUser] = useState({})
 
   const [chatType, setChatType] = useState('text');
   const [duration, setDuration] = useState('10');
@@ -104,7 +105,7 @@ export function PublicProfile() {
   
 useEffect(()=>{
 
-  console.log('notifications',notifications)
+  console.log('notifications',tempData)
 
   if(tempData!==null){
 
@@ -117,64 +118,88 @@ useEffect(()=>{
       return item?.type === 'viproom' && item?.seenStatus === "0";
     })
 
-    console.log('joinData', joinData)
+    console.log('joinData', dataFit)
 
-    console.log('dataFit dataFit',dataFit, dataFit?.[0]?.message==='Has rejected your VIP chat request.' && dataFit?.[0]?.type === 'vipchat')
-
-   if(dataFit?.length > 0){
-
-    if(dataFit?.[0]?.message==='Has rejected your VIP chat request.' && dataFit?.[0]?.type === 'vipchat' ){
-      presentAlert({
-        header: 'VIP Chat Response',
-        message: dataFit?.[0]?.username+' '+ dataFit?.[0]?.message,
-        buttons: [
-          {
-            text: 'Ok',
-            role: 'cancel',
-            handler: () => {
-              setWaitingModal(false)
-            }
-          },
-         
-        ]
+    if (Array.isArray(dataFit) && dataFit.length > 0) {
+      // If dataFit is an array, loop through each element and present an alert
+      dataFit.forEach((data) => {
+          if (data.message === "Has rejected your VIP chat request." && data.type === 'vipchat') {
+              presentAlert({
+                  header: 'VIP Chat Response',
+                  message: `${data.username} ${data.message}`,
+                  buttons: [
+                      {
+                          text: 'Ok',
+                          role: 'cancel',
+                          handler: () => {
+                              setWaitingModal(false);
+                          }
+                      }
+                  ]
+              });
+          } else if (joinData?.length > 0) {
+              presentAlert({
+                  header: 'Join VIP Chat',
+                  message: `${joinData[0].username} ${joinData[0].message}`,
+                  buttons: [
+                      {
+                          text: 'Cancel',
+                          role: 'cancel',
+                          handler: () => {
+                              setWaitingModal(false);
+                          }
+                      },
+                      {
+                          text: 'Join Now',
+                          handler: () => {
+                              setWaitingModal(false);
+                              history.push('/app/vipChat/' + joinData[0].sourceId);
+                          }
+                      }
+                  ]
+              });
+          }
       });
-    }
-
-    else{
-
-
-      if(joinData?.length > 0){
-
-        presentAlert({
-          header: 'Join VIP Chat',
-          message: joinData?.[0]?.username+' '+ joinData?.[0]?.message,
-          buttons: [
-            {
-              text: 'Cancel',
-              role: 'cancel',
-              handler: () => {
-                setWaitingModal(false)
-              }
-            },
-            {
-              text: 'Join Now',
-          
-              handler: () => {
-                setWaitingModal(false)
-                  history.push('/app/vipChat/'+joinData?.[0]?.sourceId)
-              }
-            },
-           
-          ]
-        });
-
+  } else if (typeof dataFit === 'object' && dataFit !== null) {
+      // If dataFit is an object, present a single alert
+      if (dataFit.message === "Has rejected your VIP chat request." && dataFit.type === 'vipchat') {
+          presentAlert({
+              header: 'VIP Chat Response',
+              message: `${dataFit.username} ${dataFit.message}`,
+              buttons: [
+                  {
+                      text: 'Ok',
+                      role: 'cancel',
+                      handler: () => {
+                          setWaitingModal(false);
+                      }
+                  }
+              ]
+          });
+      } else if (joinData?.length > 0) {
+          presentAlert({
+              header: 'Join VIP Chat',
+              message: `${joinData[0].username} ${joinData[0].message}`,
+              buttons: [
+                  {
+                      text: 'Cancel',
+                      role: 'cancel',
+                      handler: () => {
+                          setWaitingModal(false);
+                      }
+                  },
+                  {
+                      text: 'Join Now',
+                      handler: () => {
+                          setWaitingModal(false);
+                          history.push('/app/vipChat/' + joinData[0].sourceId);
+                      }
+                  }
+              ]
+          });
       }
-        
-
+  }
   
-     }
-
-   }
  
 
   }
@@ -225,7 +250,7 @@ useEffect(()=>{
 
         tempDataForChatRequest(data)
         setWaitingModal(true)
-        setTimer({min:10, sec:0})
+        setTimer({min:2, sec:0})
         // Close the modal
         closeModal();
   
@@ -261,11 +286,17 @@ useEffect(()=>{
   useEffect(()=>{
 
  
+    console.log('userQuery', userQuery)
 
     let usr:any = localStorage.getItem('bluedibs:user');
     let usrDt = JSON.parse(usr)
 
+   
+
+    setLogUser(usrDt)
+
   
+    
     fetchUserProfile(usrDt?.id)
   
     
@@ -570,6 +601,7 @@ console.log('dssdsdsds',data)
           <h5 style={{  textAlign:'center' }}>Sending Request</h5>
          
           <IonItem>
+           
             <IonAvatar className="conAv">
               <img src={curUserData?.avatarPath!==null? curUserData?.avatarPath: 'resources/avatar.png'} 
               onError={({ currentTarget }) => {
@@ -587,9 +619,9 @@ console.log('dssdsdsds',data)
             <Timer initialMinutes={timers.min} initialSeconds={timers.sec} />
              </div>
             </IonLabel>
-
+           
             <IonAvatar  className="conAv">
-            <img src={curUserData?.avatarPath!==null? curUserData?.avatarPath: 'resources/avatar.png'} 
+            <img src={userQuery?.data?.avatarPath!==null? userQuery?.data?.avatarPath: 'resources/avatar.png'} 
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null; // prevents looping
                 currentTarget.src="public/avatar.png";
@@ -633,9 +665,22 @@ console.log('dssdsdsds',data)
       <Container fluid p={"lg"}>
         <Flex pb={0} justify={"space-between"} align={"centers"}>
           <Flex direction={"column"} gap={"xs"} pl={0} p={"sm"}>
-            <Avatar
+
+
+          <IonAvatar  className="bigPR"   style={{ width: 100, height: 100, border:`1px solid grey` }}>
+            <img src={userQuery?.data?.avatarPath!==null? userQuery?.data?.avatarPath: 'resources/avatar.png'} 
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src="public/avatar.png";
+            
+                  }}
+                  style={{ width: '100%', height: '100%', objectFit:'cover' }}
+                  />
+            </IonAvatar>
+
+            {/* <Avatar
               src={
-                userQuery.data?.avatarPath
+                userQuery.data?.avatar
                   ? `${config.STATIC_FILE_BASE_URL}${userQuery.data.avatarPath}?alt=media`
                   : null
               }
@@ -643,7 +688,7 @@ console.log('dssdsdsds',data)
               radius="md"
               style={{ width: 100, height: 100 }}
               alt="it's me"
-            />
+            /> */}
             <div>
               <Title order={4} weight={500}>
                 {userQuery.data?.username}

@@ -72,27 +72,27 @@ const App: React.FC = () => {
 
   const requestPermissions = async () => {
     // Request notification permissions
-    const notificationPermission = await requestNotificationPermission();
-    console.log('Notification permission granted:', notificationPermission);
+    // const notificationPermission = await requestNotificationPermission();
+    // console.log('Notification permission granted:', notificationPermission);
 
-    // Request location permissions (example)
-    if (Capacitor.isNative) {
-      try {
-        const result = await Permissions.query({ name: 'geolocation' });
-        if (result.state === 'granted') {
-          console.log('Location permission already granted');
-        } else {
-          const permissionRequest = await Permissions.request({ name: 'geolocation' });
-          if (permissionRequest.state === 'granted') {
-            console.log('Location permission granted');
-          } else {
-            console.log('Location permission denied');
-          }
-        }
-      } catch (error) {
-        console.error('Error checking or requesting location permission:', error);
-      }
-    }
+    // // Request location permissions (example)
+    // if (Capacitor.isNative) {
+    //   try {
+    //     const result = await Permissions.query({ name: 'geolocation' });
+    //     if (result.state === 'granted') {
+    //       console.log('Location permission already granted');
+    //     } else {
+    //       const permissionRequest = await Permissions.request({ name: 'geolocation' });
+    //       if (permissionRequest.state === 'granted') {
+    //         console.log('Location permission granted');
+    //       } else {
+    //         console.log('Location permission denied');
+    //       }
+    //     }
+    //   } catch (error) {
+    //     console.error('Error checking or requesting location permission:', error);
+    //   }
+    // }
   }
 
 

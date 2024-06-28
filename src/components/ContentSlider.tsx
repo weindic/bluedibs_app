@@ -13,8 +13,9 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import IntroOneSvg from "../svg/intro_one";
+import { useEffect } from "react";
 
 
 const images = new Array(3).fill(0).map((_, i) => `/slider_${i + 1}.jpg`);
@@ -23,7 +24,22 @@ const images = new Array(3).fill(0).map((_, i) => `/slider_${i + 1}.jpg`);
 
 function ContentSlider() {
 
+  const history = useHistory();
+  const intro  = localStorage.getItem('intro')
+  
+  const loaded  = localStorage.getItem('intro_loaded')
 
+
+
+  useEffect(()=>{
+    if(intro==='true'  || loaded==='true'){
+
+      history.push('/auth/login')
+    }
+ 
+  },[intro])
+
+ 
   
 
   return (
@@ -115,7 +131,7 @@ function ContentSlider() {
           sx={{ position: "absolute", bottom: 20, right: 20, zIndex: 999, background:'#2e3192' }}
           size="lg"
           radius={50}
-          
+          onClick={()=>localStorage.setItem('intro','true')}
           component={Link}
           to={"/auth/login"}
         >

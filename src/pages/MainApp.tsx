@@ -57,6 +57,8 @@ export const MainLayout = () => {
   const currentPath = location.pathname;
   const hiderNav = currentPath?.includes('vipChat');
 
+  const intro  = localStorage.getItem('intro')
+
   console.log('Current Path:', currentPath);
   const ionRouter = useIonRouter();
 
@@ -110,10 +112,14 @@ export const MainLayout = () => {
 
   useEffect(() => {
 
+    console.log(" intro!=='true'",   intro!=='true')
+
     if (
       loading == false &&
       !Object.keys(userDet || {}).length &&
-      !getUserQuery.isLoading
+      !getUserQuery.isLoading &&
+      intro!=='true'
+      
     ) {
       return history.replace("/auth/welcome");
     }
@@ -123,10 +129,11 @@ export const MainLayout = () => {
 
   console.log('!userDet?.verified && Object.keys(userDet || {}).length', !userDet?.verified , Object.keys(userDet || {}).length);
 
+
   if (loading || !Object.keys(userDet || {}).length || getUserQuery.isLoading)
     return <SplashScreen />;
 
-  if (!Object.keys(userDet || {}).length)
+  if (!Object.keys(userDet || {}).length &&  intro!=='true'  )
     return <RedirectWithState to={"/auth/welcome"} replace />;
 
   if (!getUserQuery.data && getUserQuery.isFetching) return <SplashScreen />;

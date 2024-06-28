@@ -199,7 +199,15 @@ export function Dorm() {
               >
                 <Group position="apart" w="100%" align={"center"} py={5}>
                   <Group spacing={"sm"}>
-                    <Avatar size={45} src={imgUrl(profile.avatarPath)} />
+                   
+                    <IonAvatar  className="conAv" style={{width:40, height:40}}>
+                    <img src={profile.avatarPath!==null? profile.avatarPath: 'public/avatar.png'} 
+                    onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src="public/avatar.png";
+
+                    }}/>
+                    </IonAvatar>
 
                     <Text fw={500}>{profile.username}</Text>
                   </Group>
@@ -263,8 +271,13 @@ export function Dorm() {
                   {item?.userOne.id===user.id ? <>
                   
                     <Group spacing={"sm"}>
-                    <IonAvatar style={{width:40, height:40}}>
-                      <img  src={item?.userTwo?.avatarPath}/>
+                    <IonAvatar  className="conAv" style={{width:40, height:40}}>
+                    <img src={item?.userTwo?.avatarPath!==null? item?.userTwo?.avatarPath: 'public/avatar.png'} 
+                    onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src="public/avatar.png";
+
+                    }}/>
                     </IonAvatar>
                   
 
@@ -273,8 +286,13 @@ export function Dorm() {
                   </>:
                   <>
                    <Group spacing={"sm"}>
-                   <IonAvatar style={{width:40, height:40}}>
-                      <img  src={item?.userOne?.avatarPath}/>
+                   <IonAvatar  className="conAv" style={{width:40, height:40}}>
+                    <img src={item?.userOne?.avatarPath!==null? item?.userOne?.avatarPath: 'public/avatar.png'} 
+                    onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src="public/avatar.png";
+
+                    }}/>
                     </IonAvatar>
                  
                   

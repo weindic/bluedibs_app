@@ -52,7 +52,7 @@ function Onboarding({}: Props) {
 
           <Button
             rightIcon={<IconChevronRight size={18} />}
-            onClick={() => history.push("/auth/login")}
+            onClick={() =>{ history.push("/auth/login"); }}
           >
             Get Started for Free
           </Button>

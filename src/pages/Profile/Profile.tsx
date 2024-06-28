@@ -196,8 +196,8 @@ export function Profile() {
   useEffect(()=>{
 
 
-    checkPopular(userID)
-    console.log(userID)
+    checkPopular(user.id)
+    console.log(user)
 
   }, [])
 
@@ -206,6 +206,8 @@ export function Profile() {
   const [isPopular, setPopular] = useState(false)
 
   const checkPopular = async(userId:any) =>{
+
+
     try {
       const response = await fetch('https://server.bluedibs.com/popular-profile/status/'+userId, {
         method: 'GET',

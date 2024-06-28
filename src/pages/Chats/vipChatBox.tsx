@@ -50,6 +50,7 @@ import Timer from './timer';
 import { ChatStateProvider, useChatState} from "../../realtime/ChatContext";
 import { sendNotificationApi } from "../Notification/notification.api";
 import { useGlobalState } from "../../realtime/GlobalStateContext";
+import { startLiveChat } from "./api.chat";
 
 
 
@@ -167,26 +168,7 @@ export function VipChatBox() {
       })
 
     
-      if(currentChatRoom?.[0]?.status===0){
-     
-          presentAlert({
-            header: 'VIP Chat Ended',
-            message: `This VIP chat has already ended !`,
-            ackdropDismiss: false, 
-            buttons: [
-              {
-                text: 'Ok',
-                role: 'cancel',
-                handler: () => {
-              
-                }
-              },
-           
-            ]
-          });
-        
-
-      }
+   
 
     // Ensure roomId is not null before fetching messages
     if (roomId) {
@@ -237,6 +219,8 @@ export function VipChatBox() {
 
   useEffect(()=>{
 
+    console.log('timer', timers, duration)
+
     localStorage.setItem('roomAskInfo',JSON.stringify({startChat:false}))
    
 
@@ -266,7 +250,9 @@ export function VipChatBox() {
 
       if(filtered?.[0]?.userId===user.id){
 
-         getRequestData(filtered?.[0]?.fromId, filtered?.[0]?.userId)
+        //  getRequestData(filtered?.[0]?.fromId, filtered?.[0]?.userId)
+
+         setAndStartTimer(roomId)
 
       }
 
@@ -285,96 +271,6 @@ export function VipChatBox() {
 
 
 
-
-
-  const getRoomData = async (roomId: any) => {
-
-    try {
-      const roomResponse = await fetch(`https://server.bluedibs.com/vip-chat-room/${roomId}`);
-      const roomData = await roomResponse.json();
-      setRoomData(roomData);
-      getChatBoxData(roomId);
-      
-
-      console.log('getReqData', roomData.userOne.id, user.id)
-
-      if(roomData.userOne.id!==user.id){
-        const vipChatData = await getUserVipChat(user.id)
-        console.log('vipChatData', vipChatData)
-
-        setVipChatData(vipChatData)
-
-        updateSeenStatus(roomId)
-       
-      
-        if(roomData.status!==0){
-          askToJoinInfo(user.id, roomData.userOne.id, roomId )
-        }
-     
-      
-      }
-
-      if(roomData.status!==0){
-
-        if(roomData.userOne.id===user.id){
-          const vipChatData = await getUserVipChat(user.id)
-          console.log('vipChatData', vipChatData)
-          setVipChatData(vipChatData)
-          getRequestData( user.id,  roomData.userTwo.id)
-  
-      
-  
-          console.log('getReqData11')
-          
-            
-          if(roomData.status!==0){
-            await sendNotificationApi(user.id, roomData.userTwo.id, roomId, 'Has joined your VIP chat. Start a amazing chat Now.','chatLive')      
-  
-          }
-        
-        }
-      }
-
-    
-     
-    
-    
-
-    } catch (error) {
-      console.error('Error fetching room data:', error);
-    }
-  };
-  
-
-
-  const updateSeenStatus = async (roomId:any) =>{
-    const url = 'https://server.bluedibs.com/vip-chat-room/updateUnreadStatus'; // Update this URL to your actual API endpoint
-  
-
-  
-    try {
-      const response = await fetch(url, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({id:roomId}),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      const data = await response.json();
-
-
-      return data;
-    } catch (error) {
-      console.error('Error fetching vip chat request data:', error);
-      throw error;
-    }
-
-  }
 
 
 
@@ -404,8 +300,9 @@ export function VipChatBox() {
       if(data){
 
           setChatInfo(data)
-          console.log('infoOne111',parseInt(data?.duration))
-          setTimer({min:parseInt(data?.duration), sec:0})
+          console.log('infoOne111',data)
+          setDuration(data?.duration)
+          // setTimer({min:parseInt(data?.duration), sec:0})
   
 
         console.log('infoOne111', requestBody, )
@@ -418,6 +315,196 @@ export function VipChatBox() {
       throw error;
     }
   };
+
+  const setAndStartTimer = async (roomId) => {
+    try {
+      // Fetch the room data
+      const roomResponse = await fetch(`https://server.bluedibs.com/vip-chat-room/${roomId}`);
+      
+      if (!roomResponse.ok) {
+        throw new Error('Failed to fetch room data');
+      }
+  
+      const roomData = await roomResponse.json();
+      
+      // Set room data into state or perform required action
+      setRoomData(roomData);
+  
+      // Fetch expiry datetime from roomData
+      const expiryDateTime = new Date(roomData.expiry);
+      
+      // Ensure expiryDateTime is valid
+      if (isNaN(expiryDateTime.getTime())) {
+        throw new Error('Invalid expiry date');
+      }
+  
+      // Calculate difference in milliseconds from current time to expiry time
+      const currentDateTime = new Date();
+      const timeDiffMillis = expiryDateTime - currentDateTime;
+      
+      // Ensure timeDiffMillis is a positive number
+      if (timeDiffMillis < 0) {
+        console.log('The chat has ended');
+        return;
+      }
+  
+      const timeDiffSeconds = Math.floor((timeDiffMillis % 60000) / 1000);
+      const timeDiffMinutes = Math.floor(timeDiffMillis / 60000);
+  
+      console.log('dkjdjkjkf', { min: timeDiffMinutes, sec: timeDiffSeconds });
+  
+      // Set the timer with minutes and seconds
+      setTimer({ min: timeDiffMinutes, sec: timeDiffSeconds });
+  
+      // Optionally, you can start a countdown or perform other actions based on the timer values
+    } catch (error) {
+      console.error('Error in setAndStartTimer:', error);
+      // Handle errors as needed
+    }
+  };
+  
+  
+
+
+
+  
+
+
+  const startVipChatByRequester = async (user:any, userTwo:any, roomId:any, duration:any) => {
+
+    // if(timers.min < 1){
+    //   const url = 'https://server.bluedibs.com/vip-chat-room/startChatRoom';
+  
+    //   try {
+    //     const response = await fetch(url, {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json'
+    //       },
+    //       body: JSON.stringify({ roomId: roomId, minutes: duration })
+    //     });
+    
+    //     if (!response.ok) {
+    //       throw new Error('Network response was not ok');
+    //     }
+    
+    //     const res = await response.json();
+    //     console.log('resres', res.data);
+    
+    //     await sendNotificationApi(user, userTwo, roomId, 'Has joined your VIP chat. Start an amazing chat Now.', 'chatLive');
+    //     setAndStartTimer(roomId);
+    //   } catch (error) {
+    //     console.error('There was a problem with the fetch operation:', error);
+    //   }
+    // }
+
+  };
+  
+
+
+
+  const getRoomData = async (roomId: any) => {
+
+    try {
+      const roomResponse = await fetch(`https://server.bluedibs.com/vip-chat-room/${roomId}`);
+      const roomData = await roomResponse.json();
+      setRoomData(roomData);
+      getChatBoxData(roomId);
+      
+    
+
+      console.log('getReqData', roomData.userOne.id, user.id)
+
+      if(roomData.userOne.id!==user.id){
+        const vipChatData = await getUserVipChat(user.id)
+        
+        console.log('dhjkjdkjdkj2', user.id,  roomData.userOne.id)
+        setVipChatData(vipChatData)
+
+        updateSeenStatus(roomId)
+        getRequestData( user.id,  roomData.userOne.id)
+       
+      
+        if(roomData.status!==0){
+          askToJoinInfo(user.id, roomData.userOne.id, roomId )
+        }
+     
+      
+      }
+      else{
+        console.log('dhjkjdkjdkj1', user.id,  roomData.userTwo.id)
+        getRequestData( user.id,  roomData.userTwo.id)
+      }
+
+      if(roomData.status!==0){
+
+        if(roomData.userOne.id===user.id){
+          const vipChatData = await getUserVipChat(user.id)
+          console.log('bhghhg', user.id,  roomData.userTwo.id)
+          setVipChatData(vipChatData)
+        
+  
+         
+  
+          console.log('getReqData11')
+          
+            
+          if(roomData.status!==0 ){
+              startVipChatByRequester(user.id, roomData.userTwo.id, roomId, duration)
+
+        
+          }
+        
+        }
+       
+      }
+  
+
+    
+     
+    
+    
+
+    } catch (error) {
+      console.error('Error fetching room data:', error);
+    }
+  };
+  
+
+
+  const updateSeenStatus = async (roomId:any) =>{
+    const url = 'https://server.bluedibs.com/vip-chat-room/updateUnreadStatus'; // Update this URL to your actual API endpoint
+  
+
+  
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({id:roomId}),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+
+      setTimer({min:0, sec:0})
+
+      return data;
+    } catch (error) {
+      console.error('Error fetching vip chat request data:', error);
+      throw error;
+    }
+
+  }
+
+
+
+ 
   
   // Example usage:
 
@@ -599,37 +686,36 @@ export function VipChatBox() {
   }
 
 
-  const timeUpCall = async() =>{
-    if(chatInfo?.toId===user.id){
+ const timeUpCall = async () => {
+  try {
+    console.log('vipChatData11',chatInfo )
+    // Fetch current user's VIP chat data
+    const vipChatData = chatInfo.toId === user.id 
+      ? await getUserVipChat(user.id) 
+      : await getUserVipChat(chatInfo.fromId);
 
-      const vipChatData = await getUserVipChat(user.id)
-      console.log('vipChatDatavipChatData',vipChatData)
-  
-      let amount = (chatInfo?.duration * vipChatData?.text);
-  
-  
-      
-      endTheChat(chatInfo?.fromId, chatInfo?.toId,amount, chatInfo?.duration, roomId)
-  
-    }
-    else{
-      const vipChatData = await getUserVipChat(chatInfo?.fromId)
-      console.log('vipChatDatavipChatData',vipChatData)
-  
-      let amount = (chatInfo?.duration * vipChatData?.text);
-  
-  
-      if(roomData.state!==0){
-        endTheChat(chatInfo?.fromId, chatInfo?.toId,amount, chatInfo?.duration, roomId)
-      }
+    // Calculate charge based on remaining time (difference in minutes)
+    const currentDateTime = new Date();
+    const expiryDateTime = new Date(roomData.expiry);
+    const timeDiffMinutes = Math.floor((expiryDateTime - currentDateTime) / (1000 * 60));
 
-      else{
-        history.goBack()
-      }
-  
+    // Calculate chargeValue based on time difference and chatInfo.duration
+    let chargeValue = chatInfo.duration - timeDiffMinutes;
+    if (chargeValue < 0) {
+      chargeValue = 0;
     }
-  
+
+    // Calculate amount based on chargeValue and vipChatData.text
+    const amount = chargeValue * vipChatData.text;
+
+    // End the chat with the calculated amount
+    endTheChat(chatInfo.fromId, chatInfo.toId, amount, chatInfo.duration, roomId);
+  } catch (error) {
+    console.error('Error in timeUpCall:', error);
+    // Handle errors as needed
   }
+};
+
   
 
 
@@ -706,8 +792,11 @@ useIonViewWillLeave(() => {
       <AppShell
         header={<>
           <Flex
+
             align={"center"}
-            style={{ width: "100%", borderColor: "gray" }}
+            style={{ width: "100%", borderColor: "gray", 
+            
+            }}
             gap={"xl"}
           >
             <ActionIcon onClick={() => goBackSession()} variant="light">
@@ -717,11 +806,16 @@ useIonViewWillLeave(() => {
             {roomData?.userOne.id===user.id ?
             
             <Group spacing={"xs"}>
-            <Avatar
-              radius={999}
-              size={30}
-              src={imgUrl(roomData?.userTwo?.avatarPath)}
-            />
+          <IonAvatar  className="conAv" style={{width:35, height:35}}>
+                    <img src={roomData?.userTwo?.avatarPath!==null? roomData?.userTwo?.avatarPath: 'public/avatar.png'} 
+                    onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src="public/avatar.png";
+
+                    }}/>
+                    </IonAvatar>
+
+            
 
             <Title order={3} fz={17} weight={500}>
               {roomData?.userTwo?.username}
@@ -732,11 +826,16 @@ useIonViewWillLeave(() => {
             : 
             
             <Group spacing={"xs"}>
-            <Avatar
-              radius={999}
-              size={30}
-              src={imgUrl(roomData?.userOne?.avatarPath)}
-            />
+          
+
+                 <IonAvatar  className="conAv" style={{width:35, height:35}}>
+                    <img src={roomData?.userOne?.avatarPath!==null? roomData?.userOne?.avatarPath: 'public/avatar.png'} 
+                    onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src="public/avatar.png";
+
+                    }}/>
+                    </IonAvatar>
 
             <Title order={3} fz={17} weight={500}>
               {roomData?.userOne?.username}
@@ -751,11 +850,17 @@ useIonViewWillLeave(() => {
           
          
           </Flex>
+        
          
         <div className="vipLabel"> 
         {roomData?.status!==0 ? 
         <small style={{  textAlign: 'right', fontSize:14  }}>
-        <span>This VIP chat will be end in  {(askInfo === true && timers.min > 0)? <strong> {}(  <Timer  initialMinutes={timers.min} initialSeconds={timers.sec} timeUpCall={timeUpCall} /> )</strong> : <strong>(   {chatInfo?.duration + ' : 00'}  )</strong>}  minutes.</span>
+      {timers?.min > 0 ? 
+       <span>This VIP chat will be end in  {(askInfo === true && timers.min > 0)? <strong> {}(  <Timer  initialMinutes={timers.min} initialSeconds={timers.sec} timeUpCall={timeUpCall} /> )</strong> : <strong>(   {chatInfo?.duration + ' : 00'}  )</strong>}  minutes.</span>
+      : 
+      <span>VIP chat will be start soon...!</span>
+      }
+       
       </small>
         :
         <small style={{  textAlign: 'right', fontSize:14  }}>

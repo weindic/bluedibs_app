@@ -1,4 +1,4 @@
-import { IonIcon, IonItem, IonLabel, IonList } from "@ionic/react";
+import { IonAvatar, IonIcon, IonItem, IonLabel, IonList } from "@ionic/react";
 import {
   Avatar,
   Box,
@@ -23,7 +23,7 @@ import { getFormattedSmallPrice } from "../../utils";
 import { imgUrl } from "../../utils/media";
 import { queryClient } from "../../utils/queryClient";
 import { getSuggestedUsers, searchUsername } from "./search.api";
-import { searchOutline } from "ionicons/icons";
+import { headset, searchOutline } from "ionicons/icons";
 import usePinnedUserQuery from "../../hooks/usePinnedUserQuery";
 
 export function Search() {
@@ -110,15 +110,22 @@ export function Search() {
                         history.push(`/app/user/${user.id}`);
                       }}
                     >
-                      <Avatar
-                        style={{ marginRight: 10, borderRadius: "50%" }}
-                        src={
-                          user.avatarPath
-                            ? `${config.STATIC_FILE_BASE_URL}${user.avatarPath}?alt=media`
-                            : null
-                        }
-                      />
-                      <IonLabel>{user.username}</IonLabel>
+                    <IonAvatar  className="conAv" style={{width:42, height:40}}>
+                    <img src={user?.avatarPath!==null? user?.avatarPath: 'public/avatar.png'} 
+                    onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src="public/avatar.png";
+
+                    }}/>
+                    </IonAvatar>
+                      <IonLabel style={{paddingLeft:10}}>{user.username} {user?.popular}
+
+                      {user?.popular===true && <>
+                  <span>  <img src="public/tick.svg" style={{width:15, height:15}}/></span>
+                        
+                      </>
+                      }
+                      </IonLabel>
                     </IonItem>
                   ))}
               </IonList>
@@ -154,11 +161,23 @@ export function Search() {
               align={"center"}
               onClick={() => history.push(`/app/user/${user.id}`)}
             >
-              <Avatar src={imgUrl(user.avatarPath)} radius={10} size={40} />
+                    <IonAvatar  className="conAv" style={{width:48, height:40}}>
+                    <img src={user?.avatarPath!==null? user?.avatarPath: 'public/avatar.png'} 
+                    onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src="public/avatar.png";
+
+                    }}/>
+                    </IonAvatar>
 
               <Flex direction={"column"} w="100%">
                 <Title order={6} fw={600}>
                   {user?.username}
+                  {user?.popular===true && <>
+                  <span>  <img src="public/tick.svg" style={{width:15, height:15}}/></span>
+                        
+                      </>
+                      }
                 </Title>
 
                 <Text size="xs" color="dimmed" weight={400}>
@@ -181,11 +200,24 @@ export function Search() {
               align={"center"}
               onClick={() => history.push(`/app/user/${user.id}`)}
             >
-              <Avatar src={imgUrl(user.avatarPath)} radius={10} size={40} />
+                  <IonAvatar  className="conAv" style={{width:48, height:40}}>
+                    <img src={user?.avatarPath!==null? user?.avatarPath: 'public/avatar.png'} 
+                    onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src="public/avatar.png";
+
+                    }}/>
+                    </IonAvatar>
 
               <Flex direction={"column"} w="100%">
                 <Title order={6} fw={600}>
                   {user?.username}
+
+                  {user?.popular===true && <>
+                  <span>  <img src="public/tick.svg" style={{width:15, height:15}}/></span>
+                        
+                      </>
+                      }
                 </Title>
 
                 <Text size="xs" color="dimmed" weight={400}>

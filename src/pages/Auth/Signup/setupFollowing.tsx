@@ -166,6 +166,11 @@ function SuggestionCard({ user: suggestionUser }: { user: any }) {
 
         <Title order={5} truncate="end">
           {suggestionUser.username}
+          {suggestionUser?.popular===true && <>
+                  <span>  <img src="public/tick.svg" style={{width:15, height:15}}/></span>
+                  
+                </>
+                }
         </Title>
       </Flex>
 

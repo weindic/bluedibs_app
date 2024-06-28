@@ -262,7 +262,6 @@ export function Login() {
 
     createUser(payload).then((res)=>{
 
-
       localStorage.setItem("user", JSON.stringify(res));
 
       dispatch(
@@ -276,6 +275,9 @@ export function Login() {
       );
 
       history.replace("/auth/setup-profile", {emailData:datJson});
+
+
+   
     })
 
 

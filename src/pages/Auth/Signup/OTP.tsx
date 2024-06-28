@@ -200,7 +200,7 @@ function OTP({}: Props) {
             onClick={() => {
               console.log(location.state);
               requestOtpMutation.mutate({
-                email: locationState.email,
+                email: locationState.data.email,
               });
             }}
           >
