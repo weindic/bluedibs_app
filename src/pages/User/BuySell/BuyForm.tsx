@@ -63,7 +63,7 @@ export function BuyFrom({
     async onSuccess(_, value) {
       await client.fetchQuery(["user"]);
 
-      let message = `${user.username} bought ${buyForm.values.amount} Shares, ${
+      let message = `${user.username} bought ${buyForm.values.amount} Dibs, ${
         (buyForm.values.total * 0.2) / 100
       } added to your balance `;
 
@@ -72,7 +72,7 @@ export function BuyFrom({
       openSuccessModal({
         title: "Success",
         type: "success",
-        message: `You just baught shares of @${userData.username} worth ${humanizeNum(
+        message: `You just baught Dibs of @${userData.username} worth ${humanizeNum(
           getFormattedSmallPrice(buyForm.values.amount)
         )} Rs`,
       });
@@ -99,7 +99,7 @@ export function BuyFrom({
 
       total: (value: number) =>
         value > userData.shares - (userData.sold || 0)
-          ? `Not enough shares left, current: ${getFormattedSmallPrice(
+          ? `Not enough Dibs left, current: ${getFormattedSmallPrice(
               userData.shares - (userData.sold || 0) < 0
                 ? 0
                 : userData.shares - (userData.sold || 0)
@@ -142,14 +142,14 @@ export function BuyFrom({
 
         <TextInput
           variant="filled"
-          label="Total Shares Allocated"
+          label="Total Dibs Allocated"
           style={{ pointerEvents: "none" }}
           value={`${getFormattedSmallPrice(userData.shares)}`}
         />
 
         <TextInput
           variant="filled"
-          label="Shares Available"
+          label="Dibs Available"
           style={{ pointerEvents
             : "none" }}
             value={`${getFormattedSmallPrice(sharesVailable)}`}

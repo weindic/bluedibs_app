@@ -307,7 +307,7 @@ function SinglePost({ data, virtualItem }: { data: any; virtualItem: any }) {
 
   const checkPopular = async (userId: any) => {
     try {
-      const response = await fetch('https://server.bluedibs.com/popular-profile/status/' + userId, {
+      const response = await fetch('http://localhost:3000/popular-profile/status/' + userId, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -373,14 +373,14 @@ function SinglePost({ data, virtualItem }: { data: any; virtualItem: any }) {
             <Title order={5} fw={600} fz={16}>
               {data.User?.username}
               {isPopular && <>
-                  <span>  <img src="public/tick.svg" style={{width:15, height:15}}/></span>
+                  <span>  <img src="/tick.svg" style={{width:15, height:15}}/></span>
                   
                 </>
                 }
             </Title>
 
             <Text ff="Nunito Sans" size="xs" color="dimmed" weight={700}>
-              Share Price: ₹{getFormattedSmallPrice(data.User?.price ?? 0)}
+              Dibs Price: ₹{getFormattedSmallPrice(data.User?.price ?? 0)}
             </Text>
           </Flex>
         </Flex>

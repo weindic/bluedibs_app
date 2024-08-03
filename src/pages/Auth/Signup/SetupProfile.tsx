@@ -49,6 +49,8 @@ function SetupProfile(props: Props) {
 
   const [refCode, setRefCode] = useState('')
 
+  const [loaderOn, setLoaderOn] = useState(false)
+
   const user = useAppSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -144,7 +146,7 @@ else{
 
   // const fetchUser = async () => {
   //   try {
-  //     const response = await fetch(`https://server.bluedibs.com/users/${firebaseId}`);
+  //     const response = await fetch(`http://localhost:3000/users/${firebaseId}`);
   //     if (!response.ok) {
   //       throw new Error('Failed to fetch user');
   //     }
@@ -384,6 +386,8 @@ else{
       >
         <LoadingOverlay visible={updateProfMut.isLoading} />
 
+        <LoadingOverlay visible={loaderOn} />
+
         {skipRefs!=true && !usrDt2?.mobile &&
 <>
 <div style={{padding:20}}>
@@ -407,7 +411,7 @@ else{
 
     </IonCol>
     <IonCol size="5">
-    <Button disabled={refCode?.length !=6? true: false} radius={50} onClick={()=>verifyRefralCode()} style={{background:'#2e3192', marginTop:20}}   size="md" type="button" fullWidth >Verify</Button>
+    <Button disabled={refCode?.length !=6? true: false} radius={50} onClick={()=>verifyRefralCode()} style={{background:'#0b78ff', marginTop:20, color:'#fff !important'}}   size="md" type="button" fullWidth >Verify</Button>
     </IonCol>
   </IonRow>
 </IonGrid>
@@ -464,14 +468,21 @@ else{
                 fileInput.type = "file";
                 fileInput.accept = config.SUPPORTED_IMAGE_FORMATS;
                 fileInput.onchange = async (_) => {
+                  setLoaderOn(true)
                   if (fileInput.files) {
                     const [file] = Array.from(fileInput.files);
+                   
                   
                     const url:any =  await uploadFileToFirebase(file);
 
+                    if(url!==''){
+                      setLoaderOn(false)
                       console.log('url',url)
                       setAvatar(file);
                       setFileUrl(url)
+                    }
+
+                  
                   }
                 };
                 fileInput.click();
@@ -515,6 +526,11 @@ else{
       label: "Female",
       value: "FEMALE",
     },
+
+    {
+      label: "Rather Not Say",
+      value: "OTHER",
+    },
   ]}
   w={"100%"}
   {...editForm.getInputProps("gender")}
@@ -539,7 +555,7 @@ else{
 
 {props.mode !== "update" && (
           <Group position="center" mt="md" style={{padding:15, position:'fixed', bottom:0, left:0, right:0, margin:'0 auto', background:'#fff'}}>
-            <Button    radius={50} style={{background:'#2e3192'}}   size="md" type="submit" fullWidth   >
+            <Button    radius={50} style={{background:'#0b78ff'}}   size="md" type="submit" fullWidth   >
               Save & continue
             </Button>
           </Group>

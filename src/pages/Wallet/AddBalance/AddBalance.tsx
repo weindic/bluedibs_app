@@ -2,6 +2,7 @@ import {
   Button,
   Flex,
   Image,
+  LoadingOverlay,
   Stack,
   Text,
   TextInput,
@@ -29,6 +30,8 @@ function AddBalance() {
   const history = useHistory();
   const [instructionModalOpen, setInstructionModalOpen] = useState(false);
   const instructionImage = useRef(payTm);
+
+  const [loading, setLoading] = useState(false)
 
   const form = useForm({
     initialValues: {
@@ -61,6 +64,8 @@ function AddBalance() {
           "Your request sent and balance will be credited within a few minutes if not, contact support in settings",
       });
 
+      setLoading(false)
+
       history.push("/app/wallet");
     },
 
@@ -82,6 +87,7 @@ function AddBalance() {
 
   return (
     <>
+    <LoadingOverlay visible={loading}/>
       <InstructionModal
         isModalOpen={instructionModalOpen}
         setInstructionModalOpen={setInstructionModalOpen}
@@ -113,13 +119,13 @@ function AddBalance() {
             src={QrCodeSrc}
           />
 
-          <Button
-            onClick={() => {
-              downloadImage(QrCodeSrc);
-            }}
+          <a href={QrCodeSrc} target="_blank" download><Button
+            // onClick={() => {
+            //   downloadImage(QrCodeSrc);
+            // }}
           >
             Download QR Code
-          </Button>
+          </Button></a>
 
           <div>
             <Text size={"sm"}> Instructions to get Txn Id</Text>
@@ -130,6 +136,7 @@ function AddBalance() {
                 onClick={() => {
                   instructionImage.current = phonePay;
                   setInstructionModalOpen(true);
+                 
                 }}
               >
                 Phone Pay
@@ -150,6 +157,7 @@ function AddBalance() {
             onSubmit={form.onSubmit((val) => {
               console.log(val);
               mutation.mutate(val);
+              setLoading(true);
             })}
           >
             <Stack>
@@ -164,7 +172,7 @@ function AddBalance() {
                 {...form.getInputProps("transactionId")}
               />
 
-              <Button type="submit"> Mark as paid</Button>
+              <Button type="submit" > Mark as paid</Button>
             </Stack>
           </form>
         </Stack>

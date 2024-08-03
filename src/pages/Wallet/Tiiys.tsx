@@ -4,7 +4,6 @@ import {
   Flex,
   Paper,
   Stack,
-  Table,
   TextInput,
   Text,
   ActionIcon,
@@ -37,20 +36,26 @@ export function Tiiys({ query }: { query: UseQueryResult<any, unknown> }) {
 
   const [isWithdrawModalOpened, setIsWithdrawModalOpened] = useState(false);
 
-  // const tiiysValue = query?.data?.tiiys?.reduce(
-  //   (prev: number, current: any) =>
-  //     prev + current.amount * current.sellerUser.price,
-  //   0
-  // );
-
   const paymentInfoQuery = usePaymentInfoQuery();
-  console.log(query.data);
-  const ttiys = (query.data?.tiiys || []).reduce(
-    (acc: number, curr) => acc + curr.amount * curr.sellerUser.price,
-    0
-  );
+
+  const ttiys = query.data?.tiiys?.reduce((acc, curr) => {
+    const investedValue = curr.amount * curr.sellerUser.price;
+    return acc + investedValue;
+  }, 0) || 0;
+
+  const totalAmount = query.data?.tiiys?.reduce((acc, curr) => {
+    return acc + curr.amount;
+  }, 0) || 0;
 
   const history = useHistory();
+
+
+
+  console.log('Total Invested In Your Shares (TIIYS):', ttiys);
+  console.log('Total Amount of Shares:', totalAmount);
+
+  const yourDibs = totalAmount * 0.10;
+  const platformDibs = totalAmount * 0.025;
 
   return (
     <div>
@@ -66,16 +71,16 @@ export function Tiiys({ query }: { query: UseQueryResult<any, unknown> }) {
       />
 
       <Stack pt="sm">
-        <Text px={"sm"}>Total Investment In Your Units.</Text>
+        <Text px={"sm"}>Total Investment In Your Dibs.</Text>
         <Statement.Group>
-          <Statement label="TIIYS" value={`₹ ${ttiys.toFixed(4)}`} />
+          <Statement label="TIIYD" value={`₹  ${totalAmount.toFixed(4)}`} />
           <Statement
-            label={`Your Equity ${user.userEquity.toFixed(2)}%`}
-            value={"₹ " + (ttiys * (10 / 100)).toFixed(4)}
+            label={`Your Dibs ${(10).toFixed(2)}%`}
+            value={"₹ " + yourDibs.toFixed(4)}
           />
           <Statement
-            label={`Platform Equity ${user.platformEquity.toFixed(2)}%`}
-            value={"₹ " + (ttiys * (user.platformEquity / 100)).toFixed(4)}
+            label={`Platform Dibs ${(2.5).toFixed(2)}%`}
+            value={"₹ " + platformDibs.toFixed(4)}
           />
         </Statement.Group>
 

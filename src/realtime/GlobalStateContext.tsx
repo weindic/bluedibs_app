@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 import io from 'socket.io-client';
 
-const SOCKET_SERVER_URL = 'wss://server.bluedibs.com'; // Replace with your WebSocket server URL
-const NOTIFICATION_API_URL = 'https://server.bluedibs.com/notification-alerts/realtime/user';
+const SOCKET_SERVER_URL = 'ws://localhost:3000'; // Replace with your WebSocket server URL
+const NOTIFICATION_API_URL = 'http://localhost:3000/notification-alerts/realtime/user';
 
 interface Notification {
   id: string;

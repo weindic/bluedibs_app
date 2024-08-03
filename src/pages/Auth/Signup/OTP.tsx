@@ -3,6 +3,7 @@ import {
   Anchor,
   Button,
   Flex,
+  LoadingOverlay,
   Paper,
   PinInput,
   Text,
@@ -11,7 +12,7 @@ import {
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { useMutation } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router";
 import AppShell from "../../../components/AppShell";
@@ -30,6 +31,7 @@ function OTP({}: Props) {
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const locationState = location.state as any;
   console.log('locationState',locationState)
@@ -65,6 +67,8 @@ function OTP({}: Props) {
   });
 
   const verifyOtpMutation = useMutation({
+
+    
     mutationKey: ["verify-otp"],
     mutationFn: verifyOtpAPI,
 
@@ -113,7 +117,7 @@ function OTP({}: Props) {
   };
 
   const createUserProfile = async() =>{
-
+    setLoading(true)
     
     console.log(locationState.data)
 
@@ -133,6 +137,8 @@ function OTP({}: Props) {
 
           console.log('resp',resp)
 
+          setLoading(false)
+
       history.replace("/auth/setup-profile");
 
   }
@@ -147,6 +153,7 @@ function OTP({}: Props) {
   return (
     <AppShell>
       <WaveBgCard />
+      <LoadingOverlay visible={loading}/>
 
       <form
         onSubmit={otpForm.onSubmit((vals: any) => {
@@ -208,9 +215,9 @@ function OTP({}: Props) {
           </Button>
 
           <Button
-         radius={50} style={{background:'#2e3192'}}   size="md" type="submit" fullWidth mt="xl"
+         radius={50} style={{background:'#0b78ff'}}   size="md" type="submit" fullWidth mt="xl"
            
-            loading={verifyOtpMutation.isLoading}
+            loading={verifyOtpMutation.isLoading || loading}
           >
             Verify
           </Button>

@@ -292,7 +292,7 @@ export function Login() {
     <AppShell>
       <WaveBgCard />
 
-      <Title style={{color:'#2e3192'}} align="center" order={2} mb={20} weight={700} mr={"auto"}>
+      <Title style={{color:'#0b78ff'}} align="center" order={2} mb={20} weight={700} mr={"auto"}>
         Sign In
       </Title>
 
@@ -360,7 +360,7 @@ export function Login() {
           </Anchor>
         </Flex>
 
-        <Button type="submit" fullWidth mt="xl" size="md" radius={50} style={{background:'#2e3192'}} loading={loading}>
+        <Button type="submit" fullWidth mt="xl" size="md" radius={50} style={{background:'#0b78ff'}} loading={loading}>
           Sign in
         </Button>
           <Text color="dimmed" size="sm" align="center" mb={10} mt={10}>

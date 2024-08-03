@@ -62,13 +62,13 @@ export function BuyConfirmation({
             </Title>
 
             <Text align="center" size={"lg"}>
-              Shares
+              Dibs
             </Text>
           </div>
 
           <div style={{ margin: "15%" }}>
             <LabelVale label="Quantity" value={data.quantity} />
-            <LabelVale label="Share Price" value={data.share_price} />
+            <LabelVale label="Dibs Price" value={data.share_price} />
             <LabelVale label="Total Spend" value={data.total_amount} />
             <LabelVale label="Fee (%0.2)" value={data.txn_fee} />
 

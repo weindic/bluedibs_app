@@ -18,7 +18,7 @@ import './style.css';
 export function Wallet() {
   const location = useLocation();
   const { type } = location.state || 'HOLDINGS';
-  const [tab, setTab] = useState<"HOLDINGS" | "TIIYS" | "REFFERAL">("HOLDINGS");
+  const [tab, setTab] = useState<"HOLDINGS" | "TIIYD" | "REFFERAL">("HOLDINGS");
 
   const userQuery = useUserQuery();
   const history = useHistory();
@@ -88,7 +88,7 @@ const [userID, setUser] = useState('')
     }
 
     try {
-      const response = await fetch('https://server.bluedibs.com/referral-wallets/refferalGet', {
+      const response = await fetch('http://localhost:3000/referral-wallets/refferalGet', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -210,7 +210,7 @@ const [userID, setUser] = useState('')
           }}
           data={[
             { label: "Holdings", value: "HOLDINGS" },
-            { label: "TIIYS", value: "TIIYS" },
+            { label: "TIIYD", value: "TIIYD" },
             { label: "Refferal", value: "REFFERAL" },
           ]}
           fullWidth
@@ -221,7 +221,7 @@ const [userID, setUser] = useState('')
           <Holdings query={getHoldingQuery} />
         </>}
 
-        {tab === "TIIYS" && <>
+        {tab === "TIIYD" && <>
           <Tiiys query={getHoldingQuery} />
         </>}
 

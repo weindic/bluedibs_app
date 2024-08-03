@@ -108,7 +108,7 @@ const CompleteKyc = (props: Props) => {
     }
 
     try {
-      const response = await fetch('https://server.bluedibs.com/kyc-requests', {
+      const response = await fetch('http://localhost:3000/kyc-requests', {
         method: 'POST',
         body: formData,
       });

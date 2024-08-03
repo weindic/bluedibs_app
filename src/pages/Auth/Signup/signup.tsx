@@ -4,6 +4,7 @@ import {
   Button,
   Checkbox,
   Group,
+  LoadingOverlay,
   Paper,
   PasswordInput,
   Text,
@@ -107,6 +108,7 @@ export function SignUp() {
 
 
     if(result?.user){
+      setLoading(true)
 
       localStorage.setItem("user", JSON.stringify(result?.user));
 
@@ -123,6 +125,8 @@ export function SignUp() {
   };
 
   const createNewUser  = () =>{
+
+    setLoading(true)
 
    const getUser:any =     localStorage.getItem("user");
    const datJson = JSON.parse(getUser);
@@ -152,6 +156,7 @@ export function SignUp() {
         })
       );
 
+      setLoading(false)
       history.replace("/auth/setup-profile", {emailData:datJson});
     })
 
@@ -194,10 +199,12 @@ export function SignUp() {
         if(res.status===true){
 
             history.replace(`/auth/verify-otp`, { vals: vals.email, data: vals });
+            setLoading(false);
 
         }
         else{
           return signupForm.setFieldError("email", "Email Already In Use");
+          setLoading(false);
         }
 
       
@@ -242,16 +249,18 @@ export function SignUp() {
         return signupForm.setErrors({ email: "Email already in use" });
 
       return signupForm.setErrors({ email: (err as Error).message });
-    } finally {
       setLoading(false);
+    } finally {
+     
     }
   };
 
   return (
     <AppShell>
+    <LoadingOverlay visible={loading}/>
       <WaveBgCard />
 
-      <Title style={{color:'#2e3192'}} align="center" order={2} mb={20} weight={700} mr={"auto"}>
+      <Title style={{color:'#0b78ff'}} align="center" order={2} mb={20} weight={700} mr={"auto"}>
         Sign Up
       </Title>
 
@@ -276,6 +285,7 @@ export function SignUp() {
 
       <form
         onSubmit={signupForm.onSubmit((vals: any) => {
+          
           if (!vals.agreeToTermsConditions) {
             return signupForm.setErrors({
               agreeToTermsConditions: "Required",
@@ -361,7 +371,7 @@ export function SignUp() {
             }
           />
 
-          <Button  radius={50} style={{background:'#2e3192'}}   size="md" type="submit" fullWidth mt="xl" loading={loading}>
+          <Button  radius={50} style={{background:'#0b78ff'}}   size="md" type="submit" fullWidth mt="xl" loading={loading}>
             Sign Up
           </Button>
 

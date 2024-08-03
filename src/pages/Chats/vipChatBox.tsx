@@ -184,7 +184,7 @@ export function VipChatBox() {
 
   const fetchMessages = async (roomId: string) => {
     try {
-      const response = await fetch(`https://server.bluedibs.com/vip-chat-box/getAllMessages/${roomId}`);
+      const response = await fetch(`http://localhost:3000/vip-chat-box/getAllMessages/${roomId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch messages');
       }
@@ -275,7 +275,7 @@ export function VipChatBox() {
 
 
   const getRequestData = async (fromId:any, toId:any) => {
-    const url = 'https://server.bluedibs.com/vip-chat-request/get-latest'; // Update this URL to your actual API endpoint
+    const url = 'http://localhost:3000/vip-chat-request/get-latest'; // Update this URL to your actual API endpoint
   
     const requestBody = {
       fromId,
@@ -319,7 +319,7 @@ export function VipChatBox() {
   const setAndStartTimer = async (roomId) => {
     try {
       // Fetch the room data
-      const roomResponse = await fetch(`https://server.bluedibs.com/vip-chat-room/${roomId}`);
+      const roomResponse = await fetch(`http://localhost:3000/vip-chat-room/${roomId}`);
       
       if (!roomResponse.ok) {
         throw new Error('Failed to fetch room data');
@@ -373,7 +373,7 @@ export function VipChatBox() {
   const startVipChatByRequester = async (user:any, userTwo:any, roomId:any, duration:any) => {
 
     // if(timers.min < 1){
-    //   const url = 'https://server.bluedibs.com/vip-chat-room/startChatRoom';
+    //   const url = 'http://localhost:3000/vip-chat-room/startChatRoom';
   
     //   try {
     //     const response = await fetch(url, {
@@ -406,7 +406,7 @@ export function VipChatBox() {
   const getRoomData = async (roomId: any) => {
 
     try {
-      const roomResponse = await fetch(`https://server.bluedibs.com/vip-chat-room/${roomId}`);
+      const roomResponse = await fetch(`http://localhost:3000/vip-chat-room/${roomId}`);
       const roomData = await roomResponse.json();
       setRoomData(roomData);
       getChatBoxData(roomId);
@@ -473,7 +473,7 @@ export function VipChatBox() {
 
 
   const updateSeenStatus = async (roomId:any) =>{
-    const url = 'https://server.bluedibs.com/vip-chat-room/updateUnreadStatus'; // Update this URL to your actual API endpoint
+    const url = 'http://localhost:3000/vip-chat-room/updateUnreadStatus'; // Update this URL to your actual API endpoint
   
 
   
@@ -543,7 +543,7 @@ export function VipChatBox() {
 
     
     try {
-      const response = await fetch(`https://server.bluedibs.com/vip-chat/${userId}`);
+      const response = await fetch(`http://localhost:3000/vip-chat/${userId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch VIP chat data');
       }
@@ -560,7 +560,7 @@ export function VipChatBox() {
 
   const getChatBoxData = async (roomId: any) => {
     try {
-      const chatBoxResponse = await fetch(`https://server.bluedibs.com/vip-chat-box/getAllMessages/${roomId}`);
+      const chatBoxResponse = await fetch(`http://localhost:3000/vip-chat-box/getAllMessages/${roomId}`);
       const chatBoxData = await chatBoxResponse.json();
       setChatBoxData(chatBoxData);
     } catch (error) {
@@ -588,7 +588,7 @@ export function VipChatBox() {
     };
   
     try {
-      const response = await fetch('https://server.bluedibs.com/vip-chat-box/sendMessage', {
+      const response = await fetch('http://localhost:3000/vip-chat-box/sendMessage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -626,7 +626,7 @@ export function VipChatBox() {
     };
   
     try {
-      const response = await fetch('https://server.bluedibs.com/vip-chat-box/sendMessage', {
+      const response = await fetch('http://localhost:3000/vip-chat-box/sendMessage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -655,7 +655,7 @@ export function VipChatBox() {
     const payload = { fromId, toId, amount, duration, roomId };
   
     try {
-      const response = await fetch('https://server.bluedibs.com/vip-chat-room/end-chat', {
+      const response = await fetch('http://localhost:3000/vip-chat-room/end-chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -807,10 +807,10 @@ useIonViewWillLeave(() => {
             
             <Group spacing={"xs"}>
           <IonAvatar  className="conAv" style={{width:35, height:35}}>
-                    <img src={roomData?.userTwo?.avatarPath!==null? roomData?.userTwo?.avatarPath: 'public/avatar.png'} 
+                    <img src={roomData?.userTwo?.avatarPath!==null? roomData?.userTwo?.avatarPath: '/avatar.png'} 
                     onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
-                    currentTarget.src="public/avatar.png";
+                    currentTarget.src="/avatar.png";
 
                     }}/>
                     </IonAvatar>
@@ -829,10 +829,10 @@ useIonViewWillLeave(() => {
           
 
                  <IonAvatar  className="conAv" style={{width:35, height:35}}>
-                    <img src={roomData?.userOne?.avatarPath!==null? roomData?.userOne?.avatarPath: 'public/avatar.png'} 
+                    <img src={roomData?.userOne?.avatarPath!==null? roomData?.userOne?.avatarPath: '/avatar.png'} 
                     onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
-                    currentTarget.src="public/avatar.png";
+                    currentTarget.src="/avatar.png";
 
                     }}/>
                     </IonAvatar>

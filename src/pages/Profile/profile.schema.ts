@@ -11,7 +11,7 @@ export const updateProfileSchema = z.object({
     }),
    
 
-  gender: z.enum(["MALE", "FEMALE"], {
+  gender: z.enum(["MALE", "FEMALE" , "OTHER"], {
     required_error: "Gender is required",
     invalid_type_error: "Gender is required",
   }),

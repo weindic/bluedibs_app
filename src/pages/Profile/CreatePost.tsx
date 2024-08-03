@@ -39,6 +39,8 @@ function CreatePost({}: Props) {
 
   const queryClient = useQueryClient();
 
+  const [loading, setLoading] = useState(false)
+
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const progressRef = useRef<NodeJS.Timeout>();
@@ -101,6 +103,7 @@ function CreatePost({}: Props) {
       });
 
       setTimeout(() => {
+        setLoading(false)
         history.push("/app/profile");
       }, 500);
     },
@@ -120,6 +123,7 @@ function CreatePost({}: Props) {
   });
 
   async function onSubmit() {
+    setLoading(true)
     setUploadProgress(0);
 
     if (state.file instanceof File && state.file?.type.startsWith("video")) {
@@ -133,10 +137,13 @@ function CreatePost({}: Props) {
         type: "image/jpeg",
       });
 
+
       return postUploadMutation.mutate({
         file,
         caption: state.caption,
-      });
+      })
+
+      
     }, "image/jpeg");
   }
 
@@ -149,9 +156,14 @@ function CreatePost({}: Props) {
   }, [state.file]);
 
   return (
-    <AppShell
-      header={
-        <Group position="apart">
+    <>
+        <LoadingOverlay visible={loading}/>
+        <AppShell
+      header={<>
+      
+  
+
+      <Group position="apart">
           <Group align={"center"} spacing={5}>
             <ActionIcon onClick={() => history.goBack()} variant="light">
               <ArrowBackIosRoundedIcon sx={{ fontSize: 19 }} />
@@ -172,6 +184,9 @@ function CreatePost({}: Props) {
             POST
           </Button>
         </Group>
+      </>
+       
+       
       }
     >
       <Stack p="xl">
@@ -280,6 +295,8 @@ function CreatePost({}: Props) {
         </Button>
       </Stack>
     </AppShell>
+    </>
+ 
   );
 }
 

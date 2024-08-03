@@ -111,17 +111,17 @@ export function Search() {
                       }}
                     >
                     <IonAvatar  className="conAv" style={{width:42, height:40}}>
-                    <img src={user?.avatarPath!==null? user?.avatarPath: 'public/avatar.png'} 
+                    <img src={user?.avatarPath!==null? user?.avatarPath: '/avatar.png'} 
                     onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
-                    currentTarget.src="public/avatar.png";
+                    currentTarget.src="/avatar.png";
 
                     }}/>
                     </IonAvatar>
                       <IonLabel style={{paddingLeft:10}}>{user.username} {user?.popular}
 
                       {user?.popular===true && <>
-                  <span>  <img src="public/tick.svg" style={{width:15, height:15}}/></span>
+                  <span>  <img src="/tick.svg" style={{width:15, height:15}}/></span>
                         
                       </>
                       }
@@ -162,10 +162,10 @@ export function Search() {
               onClick={() => history.push(`/app/user/${user.id}`)}
             >
                     <IonAvatar  className="conAv" style={{width:48, height:40}}>
-                    <img src={user?.avatarPath!==null? user?.avatarPath: 'public/avatar.png'} 
+                    <img src={user?.avatarPath!==null? user?.avatarPath: '/avatar.png'} 
                     onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
-                    currentTarget.src="public/avatar.png";
+                    currentTarget.src="/avatar.png";
 
                     }}/>
                     </IonAvatar>
@@ -174,14 +174,14 @@ export function Search() {
                 <Title order={6} fw={600}>
                   {user?.username}
                   {user?.popular===true && <>
-                  <span>  <img src="public/tick.svg" style={{width:15, height:15}}/></span>
+                  <span>  <img src="/tick.svg" style={{width:15, height:15}}/></span>
                         
                       </>
                       }
                 </Title>
 
                 <Text size="xs" color="dimmed" weight={400}>
-                  Share Price: ₹{getFormattedSmallPrice(user.price ?? 0)}
+                  Dibs Price: ₹{getFormattedSmallPrice(user.price ?? 0)}
                 </Text>
               </Flex>
             </Flex>
@@ -200,28 +200,30 @@ export function Search() {
               align={"center"}
               onClick={() => history.push(`/app/user/${user.id}`)}
             >
-                  <IonAvatar  className="conAv" style={{width:48, height:40}}>
-                    <img src={user?.avatarPath!==null? user?.avatarPath: 'public/avatar.png'} 
+                  <IonAvatar  className="conAv" style={{width:47, height:40}}>
+                    <img src={user?.avatarPath!==null? user?.avatarPath: '/avatar.png'} 
                     onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
-                    currentTarget.src="public/avatar.png";
+                    currentTarget.src="/avatar.png";
 
                     }}/>
                     </IonAvatar>
+                    
+              
 
               <Flex direction={"column"} w="100%">
                 <Title order={6} fw={600}>
                   {user?.username}
 
                   {user?.popular===true && <>
-                  <span>  <img src="public/tick.svg" style={{width:15, height:15}}/></span>
+                  <span>  <img src="/tick.svg" style={{width:15, height:15}}/></span>
                         
                       </>
                       }
                 </Title>
 
                 <Text size="xs" color="dimmed" weight={400}>
-                  Share Price: ₹{getFormattedSmallPrice(user.price ?? 0)}
+                  Dibs Price: ₹{getFormattedSmallPrice(user.price ?? 0)}
                 </Text>
               </Flex>
             </Flex>

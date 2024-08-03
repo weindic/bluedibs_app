@@ -71,7 +71,7 @@ export function Holdings({ query }: { query: UseQueryResult<any, unknown> }) {
         <AppShell
           isModal
           header={
-            <HeaderComponent title="Shares" back={() => setOpen(false)} />
+            <HeaderComponent title="Dibs" back={() => setOpen(false)} />
           }
         >
           {!!userDet && (
@@ -107,7 +107,7 @@ export function Holdings({ query }: { query: UseQueryResult<any, unknown> }) {
               if (query.data?.ttlReturns < 0) {
                 return (
                   <Text ff="Nunito Sans" weight={400} size={"sm"} color="red">
-                    ₹{" "}
+                    {" "}
                     {humanizeNum(query.data?.ttlReturns || 0)
                       .toString()
                       .replace("-", "₹ - ")}
@@ -247,7 +247,7 @@ export function Holdings({ query }: { query: UseQueryResult<any, unknown> }) {
 
                     <IonItemOptions style={{ padding: 0, margin: 0 }}>
                       <IonItemOption
-                        style={{ backgroundColor: "#28016b", fontWeight: 600 }}
+                        style={{ backgroundColor: "#0b78ff", fontWeight: 600 }}
                         onClick={() => {
                           history.push(`/app/user/${item.sellerUser.id}`);
                         }}

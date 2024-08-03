@@ -15,7 +15,7 @@ import { getSuggestedUsers } from "../../Search/search.api";
 import { followUser, unFollowUser } from "../../User/api.user";
 import { HeaderComponent } from "../../../components/Header";
 import { getUserDetails } from "../../main.api";
-import { IonFooter, useIonRouter } from "@ionic/react";
+import { IonFooter, IonThumbnail, useIonRouter } from "@ionic/react";
 import usePinnedUserQuery from "../../../hooks/usePinnedUserQuery";
 import { personAdd } from "ionicons/icons";
 import { updateNotifData } from "../auth.api";
@@ -159,15 +159,23 @@ function SuggestionCard({ user: suggestionUser }: { user: any }) {
       noWrap
     >
       <Flex align="center" h="100%" w="calc(100% - 115px)">
-        <Avatar
-          style={{ marginRight: 10, borderRadius: "50%" }}
-          src={imgUrl(suggestionUser.avatarPath)}
-        />
+  
+
+<IonThumbnail style={{ height: '37px', width:'37px', overflow:'hidden', marginRight:10}} className="conAv">
+                    <img style={{width:'100%', height:'100%',objectFit:'cover' }} src={suggestionUser?.avatarPath!==null? suggestionUser?.avatarPath: '/avatar.png'} 
+                    onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src="/avatar.png";
+
+                    }}/>
+                    </IonThumbnail>
+
+
 
         <Title order={5} truncate="end">
           {suggestionUser.username}
           {suggestionUser?.popular===true && <>
-                  <span>  <img src="public/tick.svg" style={{width:15, height:15}}/></span>
+                  <span>  <img src="/tick.svg" style={{width:15, height:15}}/></span>
                   
                 </>
                 }
@@ -176,7 +184,7 @@ function SuggestionCard({ user: suggestionUser }: { user: any }) {
 
       <Button
       radius={50}
-      style={{background:'#28016b'}}
+      style={{background:'#0b78ff'}}
         size="xs"
         onClick={userFollowUnfollow}
         loading={followMut.isLoading || unfollowMut.isLoading}

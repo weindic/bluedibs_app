@@ -87,7 +87,7 @@ export function BuySellModal({
               </ActionIcon>
 
               <Title order={3} fz={20} weight={600}>
-                {userData.username}'s' Shares
+                {userData.username}'s' Dibs
               </Title>
             </Group>
           }

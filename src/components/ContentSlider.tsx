@@ -69,9 +69,9 @@ function ContentSlider() {
 
 
             <div className="introText">
-             <h2 style={{fontWeight:300}}>Welcome To The <br/><span style={{color:'#2e3192', fontWeight:600, fontSize:'2rem'}}>BlueDibs</span></h2>
+             <h2 style={{fontWeight:300}}>Welcome To The <br/><span style={{color:'#0b78ff', fontWeight:600, fontSize:'2rem'}}>BlueDibs</span></h2>
            
-            <p style={{color:'gray'}}>Buy & Sell shares of your friends profile. Digialize your profile and earn with Bludibs. </p>
+            <p style={{color:'gray'}}>Buy & Sell Dibs of your friends profile. Digialize your profile and earn with Bludibs. </p>
             </div>
 
            </div>
@@ -91,7 +91,7 @@ function ContentSlider() {
 
 
             <div className="introText">
-             <h2 style={{fontWeight:300}}>Create Your Social Network<br/><span style={{color:'#2e3192', fontWeight:600, fontSize:'2rem'}}>Invite Friends</span></h2>
+             <h2 style={{fontWeight:300}}>Create Your Social Network<br/><span style={{color:'#0b78ff', fontWeight:600, fontSize:'2rem'}}>Invite Friends</span></h2>
            
             <p style={{color:'gray'}}>You can invite people to follow your profile. The more you grow network the more you earn. </p>
             </div>
@@ -113,9 +113,9 @@ function ContentSlider() {
 
 
             <div className="introText">
-             <h2 style={{fontWeight:300}}>Create Your Own <br/><span style={{color:'#2e3192', fontWeight:600, fontSize:'2rem'}}>Portfolio</span></h2>
+             <h2 style={{fontWeight:300}}>Create Your Own <br/><span style={{color:'#0b78ff', fontWeight:600, fontSize:'2rem'}}>Portfolio</span></h2>
            
-            <p style={{color:'gray'}}>Buy share of other profiles and create your own profitable portfolio. </p>
+            <p style={{color:'gray'}}>Buy Dibs of other profiles and create your own profitable portfolio. </p>
             </div>
 
            </div>
@@ -128,7 +128,7 @@ function ContentSlider() {
       
      
         <Button
-          sx={{ position: "absolute", bottom: 20, right: 20, zIndex: 999, background:'#2e3192' }}
+          sx={{ position: "absolute", bottom: 20, right: 20, zIndex: 999, background:'#0b78ff' }}
           size="lg"
           radius={50}
           onClick={()=>localStorage.setItem('intro','true')}

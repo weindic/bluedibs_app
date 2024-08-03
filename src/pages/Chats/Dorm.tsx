@@ -201,10 +201,10 @@ export function Dorm() {
                   <Group spacing={"sm"}>
                    
                     <IonAvatar  className="conAv" style={{width:40, height:40}}>
-                    <img src={profile.avatarPath!==null? profile.avatarPath: 'public/avatar.png'} 
+                    <img src={profile.avatarPath!==null? profile.avatarPath: '/avatar.png'} 
                     onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
-                    currentTarget.src="public/avatar.png";
+                    currentTarget.src="/avatar.png";
 
                     }}/>
                     </IonAvatar>
@@ -272,10 +272,10 @@ export function Dorm() {
                   
                     <Group spacing={"sm"}>
                     <IonAvatar  className="conAv" style={{width:40, height:40}}>
-                    <img src={item?.userTwo?.avatarPath!==null? item?.userTwo?.avatarPath: 'public/avatar.png'} 
+                    <img src={item?.userTwo?.avatarPath!==null? item?.userTwo?.avatarPath: '/avatar.png'} 
                     onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
-                    currentTarget.src="public/avatar.png";
+                    currentTarget.src="/avatar.png";
 
                     }}/>
                     </IonAvatar>
@@ -287,10 +287,10 @@ export function Dorm() {
                   <>
                    <Group spacing={"sm"}>
                    <IonAvatar  className="conAv" style={{width:40, height:40}}>
-                    <img src={item?.userOne?.avatarPath!==null? item?.userOne?.avatarPath: 'public/avatar.png'} 
+                    <img src={item?.userOne?.avatarPath!==null? item?.userOne?.avatarPath: '/avatar.png'} 
                     onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
-                    currentTarget.src="public/avatar.png";
+                    currentTarget.src="/avatar.png";
 
                     }}/>
                     </IonAvatar>

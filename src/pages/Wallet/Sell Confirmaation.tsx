@@ -63,7 +63,7 @@ export function SellConfirmation({
 
           <div style={{ margin: "15%" }}>
             <LabelVale label="Quantity" value={data.quantity} />
-            <LabelVale label="Share Price" value={data.share_price} />
+            <LabelVale label="Dibs Price" value={data.share_price} />
             <LabelVale label="Total Amount" value={data.shares_amount} />
             <LabelVale
               label="Fee (%0.2)"

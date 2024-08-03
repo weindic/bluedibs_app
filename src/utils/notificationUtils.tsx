@@ -34,23 +34,24 @@ const useLocalNotificationScheduler = () => {
     });
   };
 
-  useEffect(() => {
-    // Send fallback notification if there are no structured notifications
-    if (structuredNotifications.length === 0) {
-      const fallbackNotification = {
-        title: 'Hello👋👋👋👋',
-        body: 'Welcome to BlueDibs.',
-        id: ++notificationIdCounter.current, // Generate a new numeric ID for fallback notification
-        schedule: { at: new Date(new Date().getTime() + 10000) }, // Schedule after 10 seconds
-        sound: '/notif.mp3',
-        attachments: [],
-        actionTypeId: null,
-        extra: null,
-      };
+  // useEffect(() => {
+  //   console.log('structuredNotifications', structuredNotifications)
+  //   // Send fallback notification if there are no structured notifications
+  //   if (structuredNotifications.length === 0) {
+  //     const fallbackNotification = {
+  //       title: 'Hello👋👋👋👋',
+  //       body: 'Welcome to BlueDibs.',
+  //       id: ++notificationIdCounter.current, // Generate a new numeric ID for fallback notification
+  //       schedule: { at: new Date(new Date().getTime() + 10000) }, // Schedule after 10 seconds
+  //       sound: '/notif.mp3',
+  //       attachments: [],
+  //       actionTypeId: null,
+  //       extra: null,
+  //     };
 
-      sendNotification(fallbackNotification);
-    }
-  }, [structuredNotifications]);
+  //     sendNotification(fallbackNotification);
+  //   }
+  // }, [structuredNotifications]);
 
   // Clean up function: Cancel all scheduled notifications
   useEffect(() => {

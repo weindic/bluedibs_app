@@ -1,4 +1,4 @@
-import { IonAvatar, IonIcon } from "@ionic/react";
+import { IonAvatar, IonIcon, IonThumbnail } from "@ionic/react";
 import {
   ActionIcon,
   Anchor,
@@ -10,6 +10,7 @@ import {
   Image,
   LoadingOverlay,
   Menu,
+  Overlay,
   Text,
   Title,
   useMantineTheme,
@@ -336,14 +337,14 @@ function SinglePost({ data, virtualItem }: { data: any; virtualItem: any }) {
         >
          
 
-          <IonAvatar  className="conAv" style={{width:55, height:38}}>
-                    <img src={data.User?.avatarPath!==null? data.User?.avatarPath: 'public/avatar.png'} 
+          <IonThumbnail style={{ height: '37px', width:'47px', overflow:'hidden'}} className="conAv">
+                    <img style={{width:'100%', height:'100%',objectFit:'cover' }} src={data.User?.avatarPath!==null? data.User?.avatarPath: '/avatar.png'} 
                     onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
-                    currentTarget.src="public/avatar.png";
+                    currentTarget.src="/avatar.png";
 
                     }}/>
-                    </IonAvatar>
+                    </IonThumbnail>
                   {/* <IonAvatar style={{width:58, height:40}}>
                       <img  src={data.User?.avatarPath}/>
                     </IonAvatar> */}
@@ -352,7 +353,7 @@ function SinglePost({ data, virtualItem }: { data: any; virtualItem: any }) {
             <Title order={5} fw={600} fz={16}>
               {data.User?.username}
               {data?.popular===true && <>
-                  <span>  <img src="public/tick.svg" style={{width:15, height:15}}/></span>
+                  <span>  <img src="/tick.svg" style={{width:15, height:15}}/></span>
                   
                 </>
                 }

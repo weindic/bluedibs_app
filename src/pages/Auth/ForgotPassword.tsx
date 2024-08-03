@@ -245,7 +245,7 @@ export function ForgotPassword() {
     </Text>
   )}
 
-  <Button  radius={50} style={{background:'#2e3192'}}   size="md" type="submit" fullWidth mt="xl" loading={loading}>
+  <Button  radius={50} style={{background:'#0b78ff'}}   size="md" type="submit" fullWidth mt="xl" loading={loading}>
     Save New Password
   </Button>
 </Paper>
@@ -306,7 +306,7 @@ export function ForgotPassword() {
         </Button>
 
         <Button
-       radius={50} style={{background:'#2e3192'}}   size="md" type="submit" fullWidth mt="xl"
+       radius={50} style={{background:'#0b78ff'}}   size="md" type="submit" fullWidth mt="xl"
          
           loading={loading}
         >
@@ -357,7 +357,7 @@ export function ForgotPassword() {
         </Text>
       )}
 
-      <Button  radius={50} style={{background:'#2e3192'}}   size="md" type="submit" fullWidth mt="xl" loading={loading}>
+      <Button  radius={50} style={{background:'#0b78ff'}}   size="md" type="submit" fullWidth mt="xl" loading={loading}>
         Send Verification Email
       </Button>
     </Paper>

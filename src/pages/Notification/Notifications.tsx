@@ -159,7 +159,7 @@ function Notifications() {
     }
 
     try {
-     await fetch('https://server.bluedibs.com/vip-chat-request/update-status', {
+     await fetch('http://localhost:3000/vip-chat-request/update-status', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -201,7 +201,7 @@ function Notifications() {
 
   const createVipRoom = async (data:any) => {
     try {
-      const response = await fetch('https://server.bluedibs.com/vip-chat-room/createRoom', {
+      const response = await fetch('http://localhost:3000/vip-chat-room/createRoom', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -240,7 +240,7 @@ function Notifications() {
 
   const updateAllSeenStatusByUserId = async (userId:any, seenStatus:any) => {
     try {
-      const response = await fetch('https://server.bluedibs.com/notification-alerts/seen-status/all', {
+      const response = await fetch('http://localhost:3000/notification-alerts/seen-status/all', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -370,7 +370,7 @@ function Notifications() {
                         alt="logo"/>
                         : 
 
-                        <img src={notification.avatarPath!=null ? notification.avatarPath: "public/avatar.png"} 
+                        <img src={notification.avatarPath!=null ? notification.avatarPath: "/avatar.png"} 
                         onError={(e) => {
                         e.target.src = 'resources/avatar.png'; // Replace with default image path
                         }}
@@ -388,7 +388,7 @@ function Notifications() {
                    <h6 onClick={()=>history.push('/app/user/'+notification.fromId)}>@{notification.username}
 {/*                    
                    {checkPopular(notification.fromId) && <>
-                  <span>  <img src="public/tick.svg" style={{width:15, height:15}}/></span>
+                  <span>  <img src="/tick.svg" style={{width:15, height:15}}/></span>
                   
                 </>
                 } */}

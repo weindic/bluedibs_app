@@ -1,7 +1,7 @@
 {
     "/api": {
          "path": "/api",
-      "proxyUrl": "https://server.bluedibs.com"
+      "proxyUrl": "http://localhost:3000"
       "secure": false,
       "changeOrigin": true,
       "logLevel": "debug"

@@ -81,23 +81,24 @@ export function GetStarted() {
    <form
         onSubmit={userInfoForm.onSubmit((vals: any) => {
           if (!userInfoForm.values.shares_dilute)
-            return setError("Please dilute shares");
+            return setError("Please dilute Dibs");
           return userInfoMut.mutate(vals);
         })}
       >
 
 <Title className="ion-text-center" color="#373A40" order={5}>
-              Dilute Units
+              Dilute Dibs
             </Title>
 
 <IonGrid>
   <IonRow>
 
 
-    <IonCol size="4">
+    <IonCol size="12">
     <Button
      radius={50}
-              color="#28016b"
+     fullWidth
+              color={userInfoForm.values.shares_dilute == 10_00_00_000 ? "green":"grey"}
               loading={loading}
               rightIcon={
                 userInfoForm.values.shares_dilute == 10_00_00_000 && (
@@ -108,14 +109,15 @@ export function GetStarted() {
                 userInfoForm.setFieldValue("shares_dilute", 10_00_00_000)
               }
             >
-              10 Cr.
+              10 Crore
    </Button>
     </IonCol>
 
-    <IonCol size="4">
+    <IonCol size="12">
     <Button
      radius={50}
-              color="#28016b"
+     fullWidth
+     color={   userInfoForm.values.shares_dilute == 1_00_00_00_000 ?  "green":"grey"}
               loading={loading}
               rightIcon={
                 userInfoForm.values.shares_dilute == 1_00_00_00_000 && (
@@ -126,14 +128,15 @@ export function GetStarted() {
                 userInfoForm.setFieldValue("shares_dilute", 1_00_00_00_000)
               }
             >
-              100 Cr.
+              100 Crore
    </Button>
     </IonCol>
 
-    <IonCol size="4">
+    <IonCol size="12">
     <Button
      radius={50}
-              color="#28016b"
+     fullWidth
+     color={   userInfoForm.values.shares_dilute == 2_00_00_00_000 ?  "green":"grey"}
               loading={loading}
               rightIcon={
                 userInfoForm.values.shares_dilute == 2_00_00_00_000 && (
@@ -144,17 +147,18 @@ export function GetStarted() {
                 userInfoForm.setFieldValue("shares_dilute", 2_00_00_00_000)
               }
             >
-              200 Cr.
+              200 Crore
             </Button>
     </IonCol>
 
 
     
-    <IonCol size="4">
+    <IonCol size="12">
     
     <Button
      radius={50}
-              color="#28016b"
+     fullWidth
+     color={   userInfoForm.values.shares_dilute == 5_00_00_00_000 ?  "green":"grey"}
               loading={loading}
               rightIcon={
                 userInfoForm.values.shares_dilute == 5_00_00_00_000 && (
@@ -165,15 +169,16 @@ export function GetStarted() {
                 userInfoForm.setFieldValue("shares_dilute", 5_00_00_00_000)
               }
             >
-              500 Cr.
+              500 Crore
             </Button>
     </IonCol>
 
-    <IonCol size="4">
+    <IonCol size="12">
     
     <Button
      radius={50}
-              color="#28016b"
+     fullWidth
+     color={   userInfoForm.values.shares_dilute == 10_00_00_00_000 ?  "green":"grey"}
               loading={loading}
               rightIcon={
                 userInfoForm.values.shares_dilute == 10_00_00_00_000 && (
@@ -184,7 +189,7 @@ export function GetStarted() {
                 userInfoForm.setFieldValue("shares_dilute", 10_00_00_00_000)
               }
             >
-              1000 Cr.
+              1000 Crore
             </Button>
     </IonCol>
   </IonRow>
@@ -197,7 +202,7 @@ export function GetStarted() {
 
             <div>
               <Title color="#373A40" order={5}>
-                Select Your Value In Units.
+                Select Your Value In Dibs.
               </Title>
               <NumberInput
                 hideControls
@@ -218,7 +223,7 @@ export function GetStarted() {
               </Text>
 
               <Text color="#373A40" size={"sm"} mt={20} weight={500}>
-            Note: Platform Charge of all Units : 2.5%
+            Note: Platform Charge of all Dibs : 2.5%
           </Text>
 
           {error && (
@@ -229,7 +234,7 @@ export function GetStarted() {
             </div>
             <IonFooter>
               
-            <Button mt={30} type="submit"  size="md" radius={50} style={{background:'#28016b', width:'100%', padding:10}} loading={loading}>
+            <Button mt={30} type="submit"  size="md" radius={50} style={{background:'#0b78ff', width:'100%', padding:10}} loading={loading}>
             Complete
           </Button>
             </IonFooter>

@@ -189,7 +189,7 @@ export default function Settings({}: Props) {
             <IonGrid>
               <IonRow>
                 <IonCol>
-                  <img src="public/invite.jpg"/>
+                  <img src="/invite.jpg"/>
 
                   <IonButton mode="ios" size="small" shape="round" expand="full" onClick={inviteLink}   style={{marginTop:10}}>Invite Friends</IonButton>
                 </IonCol>

@@ -61,7 +61,7 @@ export function SelfSellModal({ opened, onClose, onSuccess }: Props) {
       openSuccessModal({
         title: "Success",
         type: "success",
-        message: `You just sold your ${form.values.percentage}% of shares to platform`,
+        message: `You just sold your ${form.values.percentage}% of Dibs to platform`,
       });
 
       onSuccess();
@@ -117,7 +117,7 @@ export function SelfSellModal({ opened, onClose, onSuccess }: Props) {
               </ActionIcon>
 
               <Title order={3} fz={20} weight={600}>
-                Your Shares
+                Your Dibs
               </Title>
             </Group>
           }

@@ -68,7 +68,7 @@ export function SellForm({
 
       let message = `${user.username} sold ${
         sellForm.values.amount
-      } Shares back to you,  ${
+      } Dibs back to you,  ${
         (sellForm.values.amount * 0.2) / 100
       } added to your balance`;
 
@@ -83,7 +83,7 @@ export function SellForm({
       openSuccessModal({
         title: "Success",
         type: "success",
-        message: `You sold shares of @${userData.username} worth ${humanizeNum(
+        message: `You sold Dibs of @${userData.username} worth ${humanizeNum(
           getFormattedSmallPrice(sellForm.values.amount)
         )} Rs`,
       });
@@ -122,7 +122,7 @@ export function SellForm({
 
         <TextInput
           variant="filled"
-          label="Shares Holding"
+          label="Dibs Holding"
           style={{ pointerEvents: "none" }}
           value={`${availableShares ?? 0}`}
         />
@@ -148,7 +148,7 @@ export function SellForm({
               total: parseInt(e.target.value) * userData.price,
             });
           }}
-          placeholder="Shares Quantity"
+          placeholder="Dibs Quantity"
           max={availableShares}
         />
 

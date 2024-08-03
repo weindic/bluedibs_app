@@ -40,22 +40,38 @@ function convertBlobToBase64(blob: Blob) {
 }
 
 export async function downloadImage(url: string) {
-  const response = await fetch(url);
 
-  const blob = await response.blob();
+  fetch(url)
+  .then(response => response.blob())
+  .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = 'image.jpg'; // Specify the file name
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+  })
+  .catch(() => alert('Failed to download image'));
 
-  const base64Data = (await convertBlobToBase64(blob)) as string;
 
-  const savedFile = await Filesystem.writeFile({
-    path: "Download/bluedibs-qr.png",
-    data: base64Data,
-    recursive: true,
-    directory: Directory.ExternalStorage,
-  });
+  // const response = await fetch(url);
 
-  notifications.show({
-    message: "Qr downloaded",
-  });
+  // const blob = await response.blob();
 
-  return savedFile;
+  // const base64Data = (await convertBlobToBase64(blob)) as string;
+
+  // const savedFile = await Filesystem.writeFile({
+  //   path: "Download/bluedibs-qr.png",
+  //   data: base64Data,
+  //   recursive: true,
+  //   directory: Directory.ExternalStorage,
+  // });
+
+  // notifications.show({
+  //   message: "Qr downloaded",
+  // });
+
+  // return savedFile;
 }

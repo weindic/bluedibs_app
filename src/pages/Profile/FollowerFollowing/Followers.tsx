@@ -89,7 +89,7 @@ export function UserCard({
         </Title>
 
         <Text size="xs" color="dimmed" weight={400}>
-          Share Price: ₹{getFormattedSmallPrice(user.price ?? 0)}
+          Dibs Price: ₹{getFormattedSmallPrice(user.price ?? 0)}
         </Text>
       </Flex>
 
