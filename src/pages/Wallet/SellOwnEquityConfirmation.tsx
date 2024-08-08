@@ -61,9 +61,9 @@ export function SellOwnEquityConfirmation({
           </div>
 
           <div style={{ margin: "15%" }}>
-            <LabelVale label="TIIYS" value={user.currentInvestmentValue} />
-            <LabelVale label="Percentage Sell" value={data.percentage} />
-            <LabelVale label={`Platform EQ Sell `} value={"2.5%"} />
+            <LabelVale label="TIIYD" value={user.currentInvestmentValue} />
+            <LabelVale label="Dibs Sell" value={data.percentage} />
+            <LabelVale label={`Platform Dibs Sell `} value={"2.5%"} />
           </div>
 
           <Button

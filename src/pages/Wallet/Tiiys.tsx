@@ -54,8 +54,8 @@ export function Tiiys({ query }: { query: UseQueryResult<any, unknown> }) {
   console.log('Total Invested In Your Shares (TIIYS):', ttiys);
   console.log('Total Amount of Shares:', totalAmount);
 
-  const yourDibs = totalAmount * 0.10;
-  const platformDibs = totalAmount * 0.025;
+  const yourDibs = totalAmount * user.userEquity;
+  const platformDibs = totalAmount * user.platformEquity;
 
   return (
     <div>
@@ -75,11 +75,11 @@ export function Tiiys({ query }: { query: UseQueryResult<any, unknown> }) {
         <Statement.Group>
           <Statement label="TIIYD" value={`₹  ${totalAmount.toFixed(4)}`} />
           <Statement
-            label={`Your Dibs ${(10).toFixed(2)}%`}
+            label={`Your Dibs ${(user.userEquity).toFixed(2)}%`}
             value={"₹ " + yourDibs.toFixed(4)}
           />
           <Statement
-            label={`Platform Dibs ${(2.5).toFixed(2)}%`}
+            label={`Platform Dibs ${user.platformEquity+ '%'}`}
             value={"₹ " + platformDibs.toFixed(4)}
           />
         </Statement.Group>

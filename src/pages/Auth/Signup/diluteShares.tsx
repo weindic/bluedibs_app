@@ -204,7 +204,8 @@ export function GetStarted() {
               <Title color="#373A40" order={5}>
                 Select Your Value In Dibs.
               </Title>
-              <NumberInput
+           <NumberInput 
+   min={1}
                 hideControls
                 styles={{
                   input: {

@@ -29,7 +29,7 @@ interface Props {
 
 export function SelfSellModal({ opened, onClose, onSuccess }: Props) {
   const modal = useRef<HTMLIonModalElement>(null);
-  const user = useAppSelector((state) => state.user);
+  const user = useAppSelector((state: any) => state.user);
   const [isConfirmModalOpened, setIsConfirmModalOpened] = useState(false);
   const queryClient = useQueryClient();
 
@@ -72,7 +72,7 @@ export function SelfSellModal({ opened, onClose, onSuccess }: Props) {
         return notifications.show({
           color: "red",
           title: "Error",
-          message: "Cannot sell more then 2.5 equity in 24hours",
+          message: "Cannot sell more than 2.5 equity in 24 hours",
         });
       notifications.show({
         color: "red",
@@ -83,12 +83,11 @@ export function SelfSellModal({ opened, onClose, onSuccess }: Props) {
   });
 
   const validateSelfSell = async (vals: typeof form.values) => {
-    if (vals.percentage > user.userEquity) {
-      return form.setFieldError("percentage", "You dont have that much equity");
+    const maxEquity = parseInt(user.shares) * (parseInt(user.userEquity) / 100);
+    if (vals.percentage > maxEquity) {
+      return form.setFieldError("percentage", "You don't have that much equity");
     }
 
-    if (user.currentInvestmentValue < 1)
-      return form.setFieldError("percentage", "You dont have any investment ");
     return true;
   };
 
@@ -137,12 +136,19 @@ export function SelfSellModal({ opened, onClose, onSuccess }: Props) {
 
           <form
             onSubmit={form.onSubmit(async (vals) => {
-              if ((await validateSelfSell(vals)) == true)
+              if ((await validateSelfSell(vals)) === true) {
                 setIsConfirmModalOpened(true);
+              } else {
+                notifications.show({
+                  color: "red",
+                  title: "Error",
+                  message: "Invalid sell request",
+                });
+              }
             })}
           >
             <Flex direction={"column"} gap={"md"} p={"lg"}>
-              <Title order={4}> Sell equity request to platform </Title>
+              <Title order={4}> Sell Dibs request to platform </Title>
 
               <TextInput
                 variant="filled"
@@ -166,13 +172,16 @@ export function SelfSellModal({ opened, onClose, onSuccess }: Props) {
               />
 
               <NumberInput
-                label="Percentage"
+                min={1}
+                label="Dibs Quantity"
                 hideControls
-                max={user.userEquity}
-                precision={2}
-                step={0.01}
+                max={parseInt(user.shares) * (parseInt(user.userEquity) / 100)}
                 {...form.getInputProps("percentage")}
               />
+              <small>
+                Note: You can sell max{" "}
+                {parseInt(user.shares) * (parseInt(user.userEquity) / 100)} only.
+              </small>
 
               <Flex gap={"xs"}>
                 <Text size={"sm"} weight={500} ml={"auto"}>

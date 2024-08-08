@@ -135,7 +135,8 @@ export function SellForm({
           value={`₹ ${(sellForm.values.amount || 0) * userData.price}`}
         />
 
-        <NumberInput
+     <NumberInput 
+   min={1}
           hideControls
           type="number"
           variant="filled"

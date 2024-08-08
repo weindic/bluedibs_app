@@ -62,8 +62,12 @@ export function Holdings({ query }: { query: UseQueryResult<any, unknown> }) {
       y: item.price,
     }));
 
+    console.log('chartsData', chartsData)
+
     return <Chart data={chartsData} />;
   }, [userDet]);
+
+
 
   return (
     <div>

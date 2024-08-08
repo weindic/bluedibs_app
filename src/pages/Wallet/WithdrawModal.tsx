@@ -84,7 +84,8 @@ export function WithdrawModal({ isOpen, close }: Props) {
           </Title>
 
           <Flex direction={"column"} gap={"md"} p={"lg"} mt="xl">
-            <NumberInput
+         <NumberInput 
+   min={1}
               variant="filled"
               label="Amount"
               {...form.getInputProps("amount")}

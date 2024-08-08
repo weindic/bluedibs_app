@@ -163,7 +163,8 @@ export function BuyFrom({
             {...buyForm.getInputProps("total")}
           />
   
-          <NumberInput
+       <NumberInput 
+   min={1}
             hideControls
             type="number"
             variant="filled"

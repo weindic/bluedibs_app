@@ -225,6 +225,19 @@ export default function Settings({}: Props) {
             </IonItem>
           ))}
 
+
+
+           <IonItem
+            lines="none"
+            onClick={() => deleteAccount(true)}
+         
+          >
+            <IonIcon  color="primary" size="small" icon={logOutOutline} style={{marginRight:10}} />
+
+            Account Deletion Request
+          </IonItem>
+
+
           <IonItem
             lines="none"
             onClick={() => setShowConfirmAlert(true)}
