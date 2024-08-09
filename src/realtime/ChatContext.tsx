@@ -1,10 +1,10 @@
 import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 import io from 'socket.io-client';
 
-const SOCKET_SERVER_URL = 'ws://localhost:3000'; // Replace with your WebSocket server URL
-const CHAT_ROOMS_API_URL = 'http://localhost:3000/vip-chat-box/chat-rooms';
-const MESSAGES_API_URL = 'http://localhost:3000/vip-chat-box/getAllMessages';
-const TIMER_API_URL = 'http://localhost:3000/vip-chat-box/update-timer'; // Replace with your Timer API URL
+const SOCKET_SERVER_URL = 'wss://server.bluedibs.com'; // Replace with your WebSocket server URL
+const CHAT_ROOMS_API_URL = 'https://server.bluedibs.com/vip-chat-box/chat-rooms';
+const MESSAGES_API_URL = 'https://server.bluedibs.com/vip-chat-box/getAllMessages';
+const TIMER_API_URL = 'https://server.bluedibs.com/vip-chat-box/update-timer'; // Replace with your Timer API URL
 
 interface Message {
   id: string;

@@ -233,7 +233,7 @@ useEffect(()=>{
       };
   
       try {
-        const response = await fetch('http://localhost:3000/vip-chat-request/send', {
+        const response = await fetch('https://server.bluedibs.com/vip-chat-request/send', {
           method: 'POST',
           headers: {
             
@@ -317,7 +317,7 @@ useEffect(()=>{
 
   const checkPopular = async(userId:any) =>{
     try {
-      const response = await fetch('http://localhost:3000/popular-profile/status/'+userId, {
+      const response = await fetch('https://server.bluedibs.com/popular-profile/status/'+userId, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -441,7 +441,7 @@ useEffect(()=>{
 
     
     try {
-      const response = await fetch(`http://localhost:3000/vip-chat/${userId}`);
+      const response = await fetch(`https://server.bluedibs.com/vip-chat/${userId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch VIP chat data');
       }

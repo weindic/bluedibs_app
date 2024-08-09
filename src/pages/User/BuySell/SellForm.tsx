@@ -25,15 +25,16 @@ export function SellForm({
 }) {
   const [confirm, setConfirm] = useState(false);
   const user = useAppSelector((state) => state.user);
-  const diapatch = useDispatch();
+  const dispatch = useDispatch();
   const client = useQueryClient();
 
   const sellForm = useForm({
     initialValues: {
       amount: 0,
+      total: 0,
     },
     validate: {
-      amount: (vals) => (!vals ? "Amont but not be empty" : null),
+      amount: (vals) => (!vals ? "Amount must not be empty" : null),
     },
   });
 
@@ -42,29 +43,31 @@ export function SellForm({
     [userData, user]
   );
 
+  const getReceivedAmount = (amount: number, price: number) => {
+    // Define the baseline price
+    const baselinePrice = 1.00000;
+
+    // Calculate the price difference
+    const priceDifference = price - baselinePrice;
+
+    // Calculate the amount received
+    const amountReceived = amount * priceDifference;
+
+    // Return the result
+    return amountReceived;
+  };
+
   const sell_shares_mut = useMutation({
     mutationFn: async (vals: any) => sellSharesAPI(userData.id, vals),
-    // mutationFn: (vals: any) => sellSharesAPI(userData.id, vals),
     onError({ response }) {
-      // console.log(err)
       showNotification({
-        message: response.data.message || "something went wrong",
+        message: response.data.message || "Something went wrong",
         color: "red",
       });
     },
 
     async onSuccess(_, vals) {
       await client.refetchQueries(["user"]);
-      //  diapatch(setUser(data))
-      // TODO : refactor like sell form, instead of amount INR should be taken input from the user
-      // NotifyUser(userData.id, {
-      //   from: user.id,
-      //   message: `${user.username} sold ${
-      //     sellForm.values.amount
-      //   } Shares back to you,  ${
-      //     (sellForm.values.amount * 0.2) / 100
-      //   } added to your balance`,
-      // });
 
       let message = `${user.username} sold ${
         sellForm.values.amount
@@ -72,13 +75,9 @@ export function SellForm({
         (sellForm.values.amount * 0.2) / 100
       } added to your balance`;
 
-
-      sendNotificationApi(user.id, userData.id, userData.id, message, 'sell')
+      sendNotificationApi(user.id, userData.id, userData.id, message, 'sell');
 
       closeModal();
-      // diapatch(
-      //   updateUser({ balance: user.balance - userData.price * vals.amount })
-      // );
 
       openSuccessModal({
         title: "Success",
@@ -94,14 +93,14 @@ export function SellForm({
 
   return (
     <form
-      onSubmit={sellForm.onSubmit((vals) => setConfirm(true))}
+      onSubmit={sellForm.onSubmit(() => setConfirm(true))}
       style={{ paddingBottom: 40 }}
     >
       <SellConfirmation
         txn={() => sell_shares_mut.mutate(sellForm.values)}
         data={{
           shares_amount: sellForm.values.amount,
-          amount_receive: sellForm.values.amount * userData.price,
+          amount_receive: getReceivedAmount(sellForm.values.amount, userData.price),
           share_price: userData.price,
           quantity: sellForm.values.amount,
         }}
@@ -131,22 +130,22 @@ export function SellForm({
           variant="filled"
           label="Total"
           style={{ pointerEvents: "none" }}
-          {...sellForm.getInputProps("total")}
-          value={`₹ ${(sellForm.values.amount || 0) * userData.price}`}
+          value={`₹ ${sellForm.values.total}`}
         />
 
-     <NumberInput 
-   min={1}
+        <NumberInput
+          min={1}
           hideControls
           type="number"
           variant="filled"
           label="Amount"
           {...sellForm.getInputProps("amount")}
-          onChange={(e) => {
-            sellForm.getInputProps("amount").onChange(e);
+          onChange={(value) => {
+            const amount = value || 0;
+            const total = amount * userData.price;
             sellForm.setValues({
-              amount: parseInt(e.target.value),
-              total: parseInt(e.target.value) * userData.price,
+              amount,
+              total,
             });
           }}
           placeholder="Dibs Quantity"
@@ -155,14 +154,12 @@ export function SellForm({
 
         <Flex gap={"xs"}>
           <Text size={"sm"} weight={500}>
-            Platform Fees:{" "}
+            Platform Fees:
           </Text>
-
           <Text size={"sm"}> 0.2% </Text>
           <Text size={"sm"} weight={500} ml={"auto"}>
-            Balance:{" "}
+            Balance:
           </Text>
-
           <Text size={"sm"}>
             {" "}
             ₹ {humanizeNum(getFormattedSmallPrice(user.balance))}{" "}
