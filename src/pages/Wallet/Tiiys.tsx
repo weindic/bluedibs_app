@@ -54,8 +54,8 @@ export function Tiiys({ query }: { query: UseQueryResult<any, unknown> }) {
   console.log('Total Invested In Your Shares (TIIYS):', ttiys);
   console.log('Total Amount of Shares:', totalAmount);
 
-  const yourDibs = totalAmount * user.userEquity;
-  const platformDibs = totalAmount * user.platformEquity;
+  const yourDibs = totalAmount * user.userEquity / 100;
+  const platformDibs = totalAmount * user.platformEquity / 100;
 
   return (
     <div>

@@ -33,3 +33,7 @@ export const verifyOtpAPI = (body: { otp: string; email: string }) =>
 
 export const sendOtpAPI = (body: { email: string }) =>
   axiosInstance.post("/signup-request/update-otp", body).then((res) => res.data);
+
+
+export const checkUserNameValid = (body: { username: string; email:string}) =>
+  axiosInstance.post("/user/validateUserName", body).then((res) => res.data);

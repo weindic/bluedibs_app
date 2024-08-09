@@ -33,6 +33,7 @@ import { IonCol, IonGrid, IonLoading, IonRow } from "@ionic/react";
 import { sendNotificationApi } from "../../Notification/notification.api";
 import { uploadFileToFirebase } from "../../Chats/chat.service";
 import { showNotification } from "@mantine/notifications";
+import { checkUserNameValid } from "../auth.api";
 type Props =
   | {
       mode?: "setup";
@@ -52,6 +53,8 @@ function SetupProfile(props: Props) {
   const [loaderOn, setLoaderOn] = useState(false)
 
   const user = useAppSelector((state) => state.user);
+  const [username, setUsername] = useState(user.username)
+  const [newUsername, setNewUername] =  useState(user.username);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -94,6 +97,16 @@ function SetupProfile(props: Props) {
 
   // }
 
+
+
+  useEffect(()=>{
+    setNewUername(username)
+    editForm.setFieldValue('username', username);
+    
+    //   return updateProfile(vals as any);
+    // }
+
+  },[username])
 
   useEffect(()=>{
 
@@ -163,14 +176,29 @@ else{
 
 
   const verifyRefralCode = () =>{
+    const userDetails:any = localStorage.getItem('user');
+    let usrDta = JSON.parse(userDetails);
+
 
     
+
+    let firebaseID = '';
+
+    if(usrDta.firebaseId!=='' && usrDta.firebaseId!==undefined){
+      firebaseID = usrDta.firebaseId;
+    }
+    else{
+      firebaseID = usrDta.data.user.firebaseId;
+    }
+    console.log(usrDta.firebaseId!=='' && usrDta.firebaseId!==undefined, firebaseID)
+    
+
     setLoading(true)
 
     if(refCode?.length==6){
       const data = {
         
-        "receiverId": usrDt?.uid,
+        "receiverId": firebaseID,
         "referralCode": refCode
       }
 
@@ -225,7 +253,8 @@ else{
       mobile: emailData?.phoneNumber!==null &&  emailData?.phoneNumber!==undefined? String(emailData?.phoneNumber) : (user.mobile ? String(user.mobile) : '0'),
       gender: user.gender as any,
       id:(emailData?.uid && emailData?.uid!==null)? emailData?.uid :usrDt?.uid,
-      avatar:fileUrl
+      avatar:fileUrl,
+      username:username
       
       // refralCode:refralCode
     
@@ -327,6 +356,42 @@ else{
     },
   });
 
+
+  const [userMessage, setUserMessage] = useState({message:'', status:false, view:false})
+
+  const checkUserName = async (e) => {
+    const value = e.target.value;
+    const lowerCaseAndNumbers = /^[a-z0-9]+$/; // Regular expression for lowercase letters and numbers only
+  
+    // Set the username state
+    setUsername(value);
+
+    console.log(value)
+  
+    // Check if the input contains only lowercase letters and numbers, and is at least 4 characters long
+    if (value.length >=3 && lowerCaseAndNumbers.test(value)) {
+      try {
+        // Call the API to check if the username is valid
+        const res = await checkUserNameValid({ username: value, email: user.email });
+  
+        // Set the user message based on the response
+        setUserMessage({ message: res.message, status: res.status, view: true });
+      } catch (error) {
+        // Handle any errors that occur during the API call
+        alert('Something went wrong! Please try again later.');
+      }
+    } else {
+      // If the input is invalid, show an error message
+      setUserMessage({
+        message: 'Only lowercase letters and numbers are allowed, and the username must be at least 3 characters long.',
+        status: false,
+        view: true,
+      });
+    }
+  };
+  
+
+
   const formRef = useRef<HTMLFormElement>(null);
 
   return (
@@ -339,8 +404,10 @@ else{
              <HeaderComponent
             title="Edit Profile"
             back={() => props.close?.()}
+            
             rightSection={
               <Button
+              disabled={!userMessage.status && userMessage.view==true}
                 size="xs"
                 onClick={() => {
                   formRef.current?.requestSubmit();
@@ -500,10 +567,14 @@ else{
 
 <TextInput
   label="Username"
-  disabled
+  onChange={(e)=>checkUserName(e)}
   w={"100%"}
-  value={user?.username}
+  value={username}
 />
+{userMessage.view===true &&
+  <small style={{color:userMessage.status===true ? 'green': 'red'}}>{userMessage.message}</small>
+}
+
 
 <TextInput label="Email" disabled w={"100%"} value={user?.email} />
 
@@ -553,9 +624,9 @@ else{
 />
 </Stack>
 
-{props.mode !== "update" && (
+{props.mode !== "update"  && (
           <Group position="center" mt="md" style={{padding:15, position:'fixed', bottom:0, left:0, right:0, margin:'0 auto', background:'#fff'}}>
-            <Button    radius={50} style={{background:'#0b78ff'}}   size="md" type="submit" fullWidth   >
+            <Button disabled={!userMessage.status && userMessage.view==true}     radius={50} style={{background:'#0b78ff'}}   size="md" type="submit" fullWidth   >
               Save & continue
             </Button>
           </Group>

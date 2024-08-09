@@ -19,7 +19,9 @@ import { useAppSelector } from "../../../store/hooks";
 import { assistant } from "../../../utils/tgBotUtil";
 import { addBalance } from "./addBalance.api";
 import { InstructionModal } from "./phonepay-modal";
-import { downloadImage } from "../../../utils/media";
+import { Filesystem, Directory } from "@capacitor/filesystem";
+import { Share } from "@capacitor/share";
+import { Capacitor } from "@capacitor/core";
 
 const QrCodeSrc = "/bluedibs_qr_2.png";
 const payTm = "/paytm.jpeg";
@@ -31,7 +33,7 @@ function AddBalance() {
   const [instructionModalOpen, setInstructionModalOpen] = useState(false);
   const instructionImage = useRef(payTm);
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const form = useForm({
     initialValues: {
@@ -53,7 +55,6 @@ function AddBalance() {
     mutationKey: ["add-payment"],
     mutationFn: (val: typeof form.values) => addBalance(val),
     onSuccess(data) {
-      // dispatch(updateUser({ balance: user.balance + data.amount }));
       assistant.sendMessage(
         `Payment request from user: ${user.username} of INR: ${form.values.amount}`
       );
@@ -64,19 +65,21 @@ function AddBalance() {
           "Your request sent and balance will be credited within a few minutes if not, contact support in settings",
       });
 
-      setLoading(false)
+      setLoading(false);
 
       history.push("/app/wallet");
     },
 
     onError(err) {
-      if (err?.code == "ERR_BAD_REQUEST")
+      setLoading(false); // Stop loading on error
+      if (err?.code === "ERR_BAD_REQUEST") {
         return showNotification({
           color: "red",
-          title: "Balance reuest post failed",
+          title: "Balance request post failed",
           message: "Previous Payment still in process",
         });
-      console.log(err);
+      }
+      console.error(err);
       showNotification({
         color: "red",
         title: "Balance fetch failed",
@@ -85,9 +88,49 @@ function AddBalance() {
     },
   });
 
+  const downloadImageToGallery = async (imageUrl: string) => {
+    try {
+      setLoading(true); // Start loading
+
+      // Step 1: Fetch the image data as a Blob
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+
+      // Step 2: Convert Blob to Base64
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = async () => {
+        const base64data = reader.result as string;
+
+        // Step 3: Write the file to the device's filesystem
+        const fileName = "downloaded-image.jpg";
+        const savedFile = await Filesystem.writeFile({
+          path: fileName,
+          data: base64data.split(",")[1], // Remove the base64 prefix
+          directory: Directory.Documents, // Use Documents for better compatibility
+        });
+
+        // Step 4: Share the file to the gallery
+        await Share.share({
+          title: "Download Complete",
+          text: "Image saved to gallery.",
+          url: Capacitor.convertFileSrc(savedFile.uri),
+          dialogTitle: "Save to gallery",
+        });
+
+        console.log("Image saved to gallery:", savedFile);
+      };
+
+      setLoading(false); // Stop loading after operation completes
+    } catch (error) {
+      setLoading(false); // Stop loading on error
+      console.error("Error downloading image to gallery:", error);
+    }
+  };
+
   return (
     <>
-    <LoadingOverlay visible={loading}/>
+      <LoadingOverlay visible={loading} />
       <InstructionModal
         isModalOpen={instructionModalOpen}
         setInstructionModalOpen={setInstructionModalOpen}
@@ -100,10 +143,12 @@ function AddBalance() {
               Steps to follow before investing.
             </Title>
 
-            <Text size={"sm"}>Step 1: Download QR code or Take Screenshot</Text>
+            <Text size={"sm"}>
+              Step 1: Download QR code or Take Screenshot
+            </Text>
             <Text size={"sm"}>Step 2: Open Paytm or Phonepe </Text>
             <Text size={"sm"}>Step 3: Click on Scan QR Code</Text>
-            <Text size={"sm"}>Step 4: Click on the Gallary option</Text>
+            <Text size={"sm"}>Step 4: Click on the Gallery option</Text>
             <Text size={"sm"}>Step 5: Select Screenshot and pay amount</Text>
             <Text size={"sm"}>Step 6: Copy Transaction ID and paste it</Text>
             <Text size={"sm"}>Step 7: Mark as Paid</Text>
@@ -119,13 +164,15 @@ function AddBalance() {
             src={QrCodeSrc}
           />
 
-          <a href={QrCodeSrc} target="_blank" download><Button
-            // onClick={() => {
-            //   downloadImage(QrCodeSrc);
-            // }}
+          <Button
+            onClick={() => {
+              downloadImageToGallery(
+                "https://res.cloudinary.com/dzmexswgf/image/upload/v1723146123/bluedibs_qr_2_2_kyyoxx.png"
+              );
+            }}
           >
             Download QR Code
-          </Button></a>
+          </Button>
 
           <div>
             <Text size={"sm"}> Instructions to get Txn Id</Text>
@@ -136,7 +183,6 @@ function AddBalance() {
                 onClick={() => {
                   instructionImage.current = phonePay;
                   setInstructionModalOpen(true);
-                 
                 }}
               >
                 Phone Pay
@@ -155,9 +201,8 @@ function AddBalance() {
 
           <form
             onSubmit={form.onSubmit((val) => {
-              console.log(val);
+              setLoading(true); // Start loading when submitting the form
               mutation.mutate(val);
-              setLoading(true);
             })}
           >
             <Stack>
@@ -172,7 +217,7 @@ function AddBalance() {
                 {...form.getInputProps("transactionId")}
               />
 
-              <Button type="submit" > Mark as paid</Button>
+              <Button type="submit"> Mark as paid</Button>
             </Stack>
           </form>
         </Stack>

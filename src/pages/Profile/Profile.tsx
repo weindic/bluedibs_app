@@ -209,7 +209,7 @@ export function Profile() {
 
 
     try {
-      const response = await fetch('http://localhost:3000/popular-profile/status/'+userId, {
+      const response = await fetch('https://server.bluedibs.com/popular-profile/status/'+userId, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -274,7 +274,7 @@ export function Profile() {
           text
         };
 
-        const response = await fetch(`http://localhost:3000/vip-chat/enable`, {
+        const response = await fetch(`https://server.bluedibs.com/vip-chat/enable`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -294,7 +294,7 @@ export function Profile() {
 
       } else {
         // Disable VIP chat
-        const response = await fetch(`http://localhost:3000/vip-chat/disable`, {
+        const response = await fetch(`https://server.bluedibs.com/vip-chat/disable`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -335,7 +335,7 @@ export function Profile() {
 
   const getUserVipChat = async (userId:any) => {
     try {
-      const response = await fetch(`http://localhost:3000/vip-chat/${userId}`);
+      const response = await fetch(`https://server.bluedibs.com/vip-chat/${userId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch VIP chat data');
       }

@@ -18,4 +18,6 @@ export const updateProfileSchema = z.object({
   dob: z.date({ required_error: "DOB is required" }),
   id:  z.string().optional(),
   refralCode: z.string().optional(),
+  username:z.string().optional()
+
 });

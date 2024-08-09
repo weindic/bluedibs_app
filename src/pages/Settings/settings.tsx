@@ -3,6 +3,7 @@ import { IonCard, IonCol, IonGrid, IonIcon, IonItem, IonList, IonLoading, IonMod
 import {
   ActionIcon,
   Group,
+  LoadingOverlay,
   Stack,
   Text,
   Title,
@@ -25,9 +26,10 @@ import { IonButton, IonAlert } from '@ionic/react';
 import { IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton } from '@ionic/react';
 
 import './setting.css';
-import { cardOutline, checkboxOutline, checkmark, documentAttach, documentLockOutline, documentTextOutline, helpCircleOutline, logOutOutline, personCircle, personOutline } from "ionicons/icons";
-import { createRefralCode } from "./settings.api";
+import { cardOutline, checkboxOutline, checkmark, documentAttach, documentLockOutline, documentTextOutline, helpCircleOutline, logOutOutline, personCircle, personOutline, trashBinOutline } from "ionicons/icons";
+import { createRefralCode, deleteUserAccount } from "./settings.api";
 import CompleteKyc from "./completeKyc";
+import { showNotification } from "@mantine/notifications";
 type Props = {};
 
 const PAGES = {
@@ -45,6 +47,8 @@ export default function Settings({}: Props) {
     null
   );
 
+
+  
   const [isLoading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -74,6 +78,14 @@ export default function Settings({}: Props) {
     setShowConfirmAlert(false);
   };
 
+
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [reason, setReason] = useState('');
+
+
+
+
   const [showLoading, setShowLoading] = useState(false);
 
   const generateShareLink = (refCode:any) => {
@@ -90,6 +102,7 @@ export default function Settings({}: Props) {
   };
   
   
+  const [loading, setLoader] = useState(false)
 
   const inviteLink = async () => {
     const generateReferralCode = () => {
@@ -131,6 +144,77 @@ export default function Settings({}: Props) {
     });
   };
 
+
+
+  const confirmDelete = async() => {
+    setLoader(true)
+    setShowAlert(false);
+    const usr: any = localStorage.getItem('bluedibs:user');
+    const user = JSON.parse(usr);
+
+    if(reason!==''){
+
+      await deleteUserAccount({id:user.id, reason:reason}).then((res)=>{
+
+        if(res.data.status==true){
+          showNotification({
+            message: res.data.message || "something went wrong",
+            color: "green",
+          });
+        }
+        else{
+          showNotification({
+            message: res.data.message || "something went wrong",
+            color: "red",
+          });
+        }
+        setLoader(false);
+
+        setShowAlert(false);
+      }, error=>{
+        setLoader(false);
+        showNotification({
+          message: error.message || "something went wrong",
+          color: "red",
+        });
+      })
+     
+    }
+    else{
+      await deleteUserAccount({id:user.id, reason:'No reason provided.'}).then((res)=>{
+
+        if(res.data.status==true){
+          showNotification({
+            message: res.data.message || "something went wrong",
+            color: "green",
+          });
+        }
+        else{
+          showNotification({
+            message: res.data.message || "something went wrong",
+            color: "red",
+          });
+        }
+
+        setLoader(false);
+        setShowAlert(false);
+      }, error=>{
+        setLoader(false);
+        showNotification({
+          message: error.message || "something went wrong",
+          color: "red",
+        });
+      })
+    }
+
+  
+  };
+
+  const deleteCancel = () => {
+    console.log('Account deletion cancelled');
+    setShowAlert(false);
+  };
+
   return (
     <AppShell
       header={
@@ -139,6 +223,10 @@ export default function Settings({}: Props) {
         </Title>
       }
     >
+        <LoadingOverlay
+        visible={loading}
+       
+      />
       
       <IonModal
         isOpen={!!selectedPage}
@@ -149,6 +237,7 @@ export default function Settings({}: Props) {
 
 
 <div>
+  
       {/* <button onClick={inviteLink}>Invite</button> */}
       <IonLoading
         isOpen={showLoading}
@@ -227,14 +316,42 @@ export default function Settings({}: Props) {
 
 
 
+<IonAlert
+  isOpen={showAlert}
+  onDidDismiss={() => setShowAlert(false)}
+  header={'Delete My Account'}
+  inputs={[
+    {
+      name: 'reason',
+      type: 'text',
+      placeholder: 'Enter Reason To Delete.',
+      value: reason,
+    }
+  ]}
+  buttons={[
+    {
+      text: 'Cancel',
+      role: 'cancel',
+      cssClass: 'secondary',
+      handler: deleteCancel
+    },
+    {
+      text: 'Confirm',
+      handler: confirmDelete
+    }
+  ]}
+  onIonInput={(e: any) => setReason(e.detail.value!)}
+/>
+
+
            <IonItem
             lines="none"
-            onClick={() => deleteAccount(true)}
+            onClick={() => setShowAlert(true)}
          
           >
-            <IonIcon  color="primary" size="small" icon={logOutOutline} style={{marginRight:10}} />
+            <IonIcon  color="primary" size="small" icon={trashBinOutline} style={{marginRight:10}} />
 
-            Account Deletion Request
+            Delete My Account
           </IonItem>
 
 

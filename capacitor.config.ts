@@ -15,7 +15,6 @@ const config: CapacitorConfig = {
       iconColor: "#488AFF",
       sound: "beep.wav",
     },
-
     SplashScreen: {
       launchShowDuration: 3000
     }

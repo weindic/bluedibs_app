@@ -14,3 +14,8 @@ export const getKYCStatus = (userId:any) => {
 export const createRefralCode = (data:any) => {
   return axiosInstance.post("referrals", data);
 };
+
+
+export const deleteUserAccount = (data:any) => {
+  return axiosInstance.post("user/deleteAccountRequest", data);
+};
